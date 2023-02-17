@@ -35,7 +35,7 @@ class Main extends Component {
                 <p className="block-two">Thanks to smart contract technology, dWill works completely in a decentralized way, reliably and autonomously. No one (no one at all, not even the project team) will have access to the funds you bequeathed.&nbsp;<a href='https://dwill.slite.page/p/yFyU0Vhz-TJakC/dWIll' target="_blank" rel="noreferrer">Read more about how it works.</a>
                 </p>
                 {
-                    (this.props.inheritancesLength === 0 || this.props.signer === null)
+                    (this.props.inheritancesLength == 0 || this.props.signer === null)
                         ?
                         ''
                         : <Inheritances
@@ -50,7 +50,7 @@ class Main extends Component {
                 }
                 <p className="block-three">
                     {
-                        (this.props.willsLength === 0) && (this.props.signer !== null)
+                        (this.props.willsLength == 0) && (this.props.signer !== null)
                             ?
                             `You don't have active dWills on the ${this.props.networkName} network yet.`
                             :

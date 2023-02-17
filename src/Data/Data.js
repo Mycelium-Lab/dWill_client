@@ -14,6 +14,7 @@ class Data extends Component {
                 <div>
                     <div>
                         <ResetTimers 
+                            ethcallProvider={this.props.ethcallProvider}
                             willsLength={this.props.willsLength}
                             contractAddress={this.props.contractAddress} 
                             signer={this.props.signer} 

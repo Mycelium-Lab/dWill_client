@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import { ethers } from "ethers"
+import { Contract } from 'ethcall';
 
 import TheWill from '../Contract/TheWill.json'
 
@@ -82,12 +83,14 @@ class ResetTimers extends Component {
 
     async resetTimers() {
         const { contract } = this.state
-        let ids = []
+        let willsCall = []
+        const ethcallContract = new Contract(this.props.contractAddress, TheWill.abi)
         for (let i = 0; i < this.props.willsLength; i++) {
-            ids[i] = i;
+            willsCall.push(ethcallContract.getWill(this.props.signerAddress, i))
         }
+        const wills = await this.props.ethcallProvider.all(willsCall)
         this.handleShowConfirm()
-        await contract.resetTimers(ids)
+        await contract.resetTimers(wills.map(v => v.ID))
             .then(async (tx) => {
                 this.handleCloseConfirm()
                 this.handleShowAwait('Reset timers')

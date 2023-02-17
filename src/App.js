@@ -275,8 +275,8 @@ class App extends Component {
       })
       this.setState({
         contract, 
-        willsLength: wills.length === undefined ? 0 : wills.length, 
-        inheritancesLength: inheritances.length === undefined ? 0 : inheritances.length
+        willsLength: wills, 
+        inheritancesLength: inheritances
       })
     } catch (error) {
       console.error(error)
@@ -319,7 +319,7 @@ class App extends Component {
 
         <main className="_container">
           {
-            this.state.signer === null || this.state.willsLength === 0
+            this.state.signer === null || this.state.willsLength == 0
               ?
               <Main
                 inheritancesLength={this.state.inheritancesLength}

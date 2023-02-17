@@ -92,50 +92,63 @@ class Inheritances extends Component {
                 networkName = `BNBTest Chain`
             }
             contract.on('AddWill', async (ID, owner, heir, token, timeWhenWithdraw, amount) => {
-                let __inheritances = this.state.inheritances
-                if (heir.toLowerCase() === signerAddress.toLowerCase()) {
-                    const inheritance = await contract.inheritanceData(ID.toString())
-                    const token = new ethers.Contract(inheritance.token, ERC20.abi, signer)
-                    const symbol = await token.symbol()
-                    const decimals = await token.decimals()
-                    let exist = false
-                    for (let i = 0; i < __inheritances.length; i++) {
-                        if (__inheritances[i].ID === inheritance.ID.toString()) {
-                            exist = true
+                try {
+                    let __inheritances = this.state.inheritances
+                    if (heir.toLowerCase() === signerAddress.toLowerCase()) {
+                        const inheritance = await contract.willData(ID.toString())
+                        const token = new ethers.Contract(inheritance.token, ERC20.abi, signer)
+                        const symbol = await token.symbol()
+                        const decimals = await token.decimals()
+                        let exist = false
+                        for (let i = 0; i < __inheritances.length; i++) {
+                            if (__inheritances[i].ID === inheritance.ID.toString()) {
+                                exist = true
+                            }
                         }
+                        if (exist === false) {
+                            __inheritances.push({
+                                ID: inheritance.ID.toString(),
+                                amount: inheritance.amount.toString(),
+                                done: inheritance.done,
+                                heir: inheritance.heir,
+                                owner: inheritance.owner,
+                                timeWhenWithdraw: inheritance.withdrawalTime.toString(),
+                                token: inheritance.token,
+                                symbol,
+                                decimals
+                            })
+                        }
+                        this.setState({ inheritances: __inheritances })
                     }
-                    if (exist === false) {
-                        __inheritances.push({
-                            ID: inheritance.ID.toString(),
-                            amount: inheritance.amount.toString(),
-                            done: inheritance.done,
-                            heir: inheritance.heir,
-                            owner: inheritance.owner,
-                            timeWhenWithdraw: inheritance.timeWhenWithdraw.toString(),
-                            token: inheritance.token,
-                            symbol,
-                            decimals
-                        })
-                    }
-                    this.setState({ inheritances: __inheritances })
+                } catch (error) {
+                    console.error(error)
                 }
             })
-            contract.on('Withdraw', async (ID, owner, heir, timeWhenWithdraw) => {
-                let __inheritances = this.state.inheritances
-                if (heir.toLowerCase() === signerAddress.toLowerCase()) {
-                    __inheritances = __inheritances.filter(v => v.ID !== ID.toString())
-                    this.setState({ inheritances: __inheritances })
+            contract.on('Withdraw', async (ID, owner, heir, token, timeWhenWithdraw, amount) => {
+                try {
+                    let __inheritances = this.state.inheritances
+                    if (heir.toLowerCase() === signerAddress.toLowerCase()) {
+                        __inheritances = __inheritances.filter(v => v.ID !== ID.toString())
+                        this.setState({ inheritances: __inheritances })
+                    }
+                } catch (error) {
+                    console.error(error)
                 }
             })
             contract.on('RemoveWill', async (ID, owner, heir) => {
-                let __inheritances = this.state.inheritances
-                if (heir.toLowerCase() === signerAddress.toLowerCase()) {
-                    __inheritances = __inheritances.filter(v => v.ID !== ID.toString())
-                    this.setState({ inheritances: __inheritances })
+                try {
+                    let __inheritances = this.state.inheritances
+                    if (heir.toLowerCase() === signerAddress.toLowerCase()) {
+                        __inheritances = __inheritances.filter(v => v.ID !== ID.toString())
+                        this.setState({ inheritances: __inheritances })
+                    }
+                } catch (error) {
+                    console.error(error)
                 }
             })
-            contract.on('UpdateWithdrawalTime', async (ID, owner, heir, newTime) => {
+            contract.on('UpdateWithdrawalTime', async (ID, lastTime, newTime)  => {
                 try {
+                    const heir = (await contract.willData(ID)).heir
                     if (heir.toLowerCase() === signerAddress.toLowerCase()) {
                         let __inheritances = this.state.inheritances
                         for (let i = 0; i < __inheritances.length; i++) {
@@ -153,57 +166,52 @@ class Inheritances extends Component {
                     console.log(error)
                 }
             })
-            contract.on('UpdateHeir', async (ID, owner, heir) => {
-                let __inheritances = this.state.inheritances
-                __inheritances = __inheritances.filter(v => v.ID.toString() !== ID.toString())
-                if (heir.toLowerCase() === signerAddress.toLowerCase()) {
-                    const inheritance = await contract.inheritanceData(ID.toString())
-                    const token = new ethers.Contract(inheritance.token, ERC20.abi, signer)
-                    const symbol = await token.symbol()
-                    const decimals = await token.decimals()
-                    __inheritances.push({
-                        ID: inheritance.ID.toString(),
-                        amount: inheritance.amount.toString(),
-                        done: inheritance.done,
-                        heir: inheritance.heir,
-                        owner: inheritance.owner,
-                        timeWhenWithdraw: inheritance.timeWhenWithdraw.toString(),
-                        token: inheritance.token,
-                        symbol,
-                        decimals
-                    })
-                }
-                this.setState({
-                    inheritances: __inheritances
-                })
-            })
-            contract.on('UpdateAmount', (ID, owner, amount) => {
-                if (owner.toLowerCase() === signerAddress.toLowerCase()) {
+            contract.on('UpdateHeir', async (ID, oldHeir, heir) => {
+                try {
+                    const heir = (await contract.willData(ID)).heir
                     let __inheritances = this.state.inheritances
-                    for (let i = 0; i < __inheritances.length; i++) {
-                        if (__inheritances[i].ID === ID.toString()) {
-                            __inheritances[i].amount = amount.toString()
-                        }
+                    __inheritances = __inheritances.filter(v => v.ID.toString() !== ID.toString())
+                    if (heir.toLowerCase() === signerAddress.toLowerCase()) {
+                        const inheritance = await contract.willData(ID.toString())
+                        const token = new ethers.Contract(inheritance.token, ERC20.abi, signer)
+                        const symbol = await token.symbol()
+                        const decimals = await token.decimals()
+                        __inheritances.push({
+                            ID: inheritance.ID.toString(),
+                            amount: inheritance.amount.toString(),
+                            done: inheritance.done,
+                            heir: inheritance.heir,
+                            owner: inheritance.owner,
+                            timeWhenWithdraw: inheritance.withdrawalTime.toString(),
+                            token: inheritance.token,
+                            symbol,
+                            decimals
+                        })
                     }
                     this.setState({
                         inheritances: __inheritances
                     })
+                } catch (error) {
+                    console.log(error)
                 }
             })
-            contract.on('UpdateWithdrawalTime', (IDs, owner, newTimes) => {
-                let __inheritances = this.state.inheritances
-                if (__inheritances[0] !== undefined && __inheritances[0].owner.toLowerCase() === owner.toLowerCase()) {
-                    for (let i = 0; i < IDs.length; i++) {
-                        for (let j = 0; j < __inheritances.length; j++) {
-                            if (IDs[i].toString() === __inheritances[j].ID) {
-                                __inheritances[j].timeWhenWithdraw = newTimes[i];
+            contract.on('UpdateAmount', async (ID, oldAmount, newAmount) => {
+                try {
+                    const heir = (await contract.willData(ID)).heir
+                    if (heir.toLowerCase() === signerAddress.toLowerCase()) {
+                        let __inheritances = this.state.inheritances
+                        for (let i = 0; i < __inheritances.length; i++) {
+                            if (__inheritances[i].ID === ID.toString()) {
+                                __inheritances[i].amount = newAmount.toString()
                             }
                         }
+                        this.setState({
+                            inheritances: __inheritances
+                        })
                     }
+                } catch (error) {
+                    console.log(error)
                 }
-                this.setState({
-                    inheritances: __inheritances
-                })
             })
             this.setState({ signer, signerAddress, contract, inheritances: _inheritances, network: networkName })
             const body = document.getElementsByTagName('body')

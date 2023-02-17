@@ -135,52 +135,64 @@ class Wills extends Component {
             }
             this.setState({ signer, signerAddress, contract, wills: _wills, networkPic })
             contract.on('AddWill', async (ID, owner, heir, token, timeWhenWithdraw, amount) => {
-                console.log(owner.toLowerCase() === signerAddress.toLowerCase())
-                if (owner.toLowerCase() === signerAddress.toLowerCase()) {
-                    let __wills = this.state.wills
-                    const will = await contract.inheritanceData(ID.toString())
-                    const token = new ethers.Contract(will.token, ERC20.abi, signer)
-                    const symbol = await token.symbol()
-                    const decimals = await token.decimals()
-                    let exist = false
-                    for (let i = 0; i < __wills.length; i++) {
-                        if (__wills[i].ID === will.ID.toString()) {
-                            exist = true
+                try {
+                    if (owner.toLowerCase() === signerAddress.toLowerCase()) {
+                        let __wills = this.state.wills
+                        const will = await contract.willData(ID.toString())
+                        const token = new ethers.Contract(will.token, ERC20.abi, signer)
+                        const symbol = await token.symbol()
+                        const decimals = await token.decimals()
+                        let exist = false
+                        for (let i = 0; i < __wills.length; i++) {
+                            if (__wills[i].ID === will.ID.toString()) {
+                                exist = true
+                            }
                         }
+                        if (exist === false) {
+                            __wills.push({
+                                ID: will.ID.toString(),
+                                amount: will.amount.toString(),
+                                done: will.done,
+                                heir: will.heir,
+                                owner: will.owner,
+                                timeWhenWithdraw: will.withdrawalTime.toString(),
+                                timeBetweenWithdrawAndStart: will.timeInterval.toString(),
+                                token: will.token,
+                                symbol,
+                                decimals
+                            })
+                        }
+                        this.setState({ wills: __wills })
                     }
-                    if (exist === false) {
-                        __wills.push({
-                            ID: will.ID.toString(),
-                            amount: will.amount.toString(),
-                            done: will.done,
-                            heir: will.heir,
-                            owner: will.owner,
-                            timeWhenWithdraw: will.timeWhenWithdraw.toString(),
-                            timeBetweenWithdrawAndStart: will.timeBetweenWithdrawAndStart.toString(),
-                            token: will.token,
-                            symbol,
-                            decimals
-                        })
-                    }
-                    this.setState({ wills: __wills })
+                } catch (error) {
+                    console.error(error)
                 }
             })
-            contract.on('Withdraw', async (ID, owner, heir, timeWhenWithdraw) => {
-                if (owner.toLowerCase() === signerAddress.toLowerCase()) {
-                    let __wills = this.state.wills
-                    __wills = __wills.filter(v => v.ID !== ID.toString())
-                    this.setState({ wills: __wills })
+            contract.on('Withdraw', async (ID, owner, heir, token, timeWhenWithdraw, amount) => {
+                try {
+                    if (owner.toLowerCase() === signerAddress.toLowerCase()) {
+                        let __wills = this.state.wills
+                        __wills = __wills.filter(v => v.ID !== ID.toString())
+                        this.setState({ wills: __wills })
+                    }
+                } catch (error) {
+                    console.error(error)
                 }
             })
             contract.on('RemoveWill', async (ID, owner, heir) => {
-                if (owner.toLowerCase() === signerAddress.toLowerCase()) {
-                    let __wills = this.state.wills
-                    __wills = __wills.filter(v => v.ID !== ID.toString())
-                    this.setState({ wills: __wills })
+                try {
+                    if (owner.toLowerCase() === signerAddress.toLowerCase()) {
+                        let __wills = this.state.wills
+                        __wills = __wills.filter(v => v.ID !== ID.toString())
+                        this.setState({ wills: __wills })
+                    }
+                } catch (error) {
+                    console.error(error)
                 }
             })
-            contract.on('UpdateWithdrawalTime', async (ID, owner, heir, newTime) => {
+            contract.on('UpdateWithdrawalTime', async (ID, lastTime, newTime) => {
                 try {
+                    const owner = (await contract.willData(ID)).owner
                     if (owner.toLowerCase() === signerAddress.toLowerCase()) {
                         let __wills = this.state.wills
                         for (let i = 0; i < __wills.length; i++) {
@@ -198,45 +210,40 @@ class Wills extends Component {
                     console.log(error)
                 }
             })
-            contract.on('UpdateHeir', (ID, owner, heir) => {
-                if (owner.toLowerCase() === signerAddress.toLowerCase()) {
-                    let __wills = this.state.wills
-                    for (let i = 0; i < __wills.length; i++) {
-                        if (_wills[i].ID === ID.toString()) {
-                            _wills[i].heir = heir
-                        }
-                    }
-                    this.setState({
-                        wills: __wills
-                    })
-                }
-            })
-            contract.on('UpdateAmount', (ID, owner, amount) => {
-                if (owner.toLowerCase() === signerAddress.toLowerCase()) {
-                    let __wills = this.state.wills
-                    for (let i = 0; i < __wills.length; i++) {
-                        if (_wills[i].ID === ID.toString()) {
-                            _wills[i].amount = amount.toString()
-                        }
-                    }
-                    this.setState({
-                        wills: __wills
-                    })
-                }
-            })
-            contract.on('UpdateWithdrawalTime', (IDs, owner, newTimes) => {
-                if (owner.toLowerCase() === signerAddress.toLowerCase()) {
-                    let __wills = this.state.wills
-                    for (let i = 0; i < IDs.length; i++) {
-                        for (let j = 0; j < __wills.length; j++) {
-                            if (IDs[i].toString() === _wills[j].ID) {
-                                _wills[j].timeWhenWithdraw = newTimes[i];
+            contract.on('UpdateHeir', async (ID, oldHeir, heir) => {
+                try {
+                    const owner = (await contract.willData(ID)).owner
+                    if (owner.toLowerCase() === signerAddress.toLowerCase()) {
+                        let __wills = this.state.wills
+                        for (let i = 0; i < __wills.length; i++) {
+                            if (_wills[i].ID === ID.toString()) {
+                                _wills[i].heir = heir
                             }
                         }
+                        this.setState({
+                            wills: __wills
+                        })
                     }
-                    this.setState({
-                        wills: __wills
-                    })
+                } catch (error) {
+                    console.log(error)
+                }
+            })
+            contract.on('UpdateAmount', async (ID, oldAmount, newAmount) => {
+                try {
+                    const owner = (await contract.willData(ID)).owner
+                    if (owner.toLowerCase() === signerAddress.toLowerCase()) {
+                        let __wills = this.state.wills
+                        for (let i = 0; i < __wills.length; i++) {
+                            if (_wills[i].ID === ID.toString()) {
+                                _wills[i].amount = newAmount.toString()
+                            }
+                        }
+                        this.setState({
+                            wills: __wills
+                        })
+                    }
+                } catch (error) {
+                    console.log(error)
                 }
             })
             const body = document.getElementsByTagName('body')
@@ -450,7 +457,6 @@ class Wills extends Component {
             if (updateAmount === true && isUnlimitedAmount) {
                 currentEditAmount = ethers.constants.MaxUint256.toString()
             }
-            console.log(currentEditID,_updatedTime,currentEditHeirAddress,currentEditAmount === ethers.constants.MaxUint256.toString() ? currentEditAmount : (BigInt(currentEditAmount * Math.pow(10, currentEditDecimals))).toString())
             if (updateHeir === true && updateAmount === false && year === baseYear && month === baseMonth && day === baseDay) {
                 promise = contract.updateHeir(
                     currentEditID,
