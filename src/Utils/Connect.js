@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import PolygonPic from '../content/poligon.svg'
 import BinancePic from '../content/binance.svg'
+import BinancePic2 from '../content/image32.png'
 import EthereumPic from '../content/ethereum.svg'
 import AvalanchePic from '../content/avalanche.svg'
 import OptimismPic from '../content/optimism.svg'
 import ArbitrumPic from '../content/arbitrum.svg'
+import ArbitrumPic2 from '../content/image38.png'
 import btnMetamask from '../content/btn-metamask.svg'
 import btnWallet from '../content/btn-wallet.svg'
 import logoutPic from '../content/logout.svg'
@@ -345,7 +347,7 @@ class Connect extends Component {
             } else if (id === chainIDs.Goerli) {
                 return this._renderNetwork(EthereumPic, 'Goerli')
             } else if (id === chainIDs.BinanceTestnet) {
-                return this._renderNetwork(BinancePic, 'BNBTest Test')
+                return this._renderNetwork(BinancePic2, 'BNBTest Test')
             } else if (id === chainIDs.Polygon) {
                 return this._renderNetwork(PolygonPic, 'Polygon')
             } else if (id === chainIDs.BinanceMainnet) {
@@ -357,7 +359,7 @@ class Connect extends Component {
             } else if (id === chainIDs.OptimismMainnet) {
                 return this._renderNetwork(OptimismPic, 'Optimism')
             } else if (id === chainIDs.ArbitrumMainnet) {
-                return this._renderNetwork(ArbitrumPic, 'Arbitrum')
+                return this._renderNetwork(ArbitrumPic2, 'Arbitrum')
             }
         }
     }
@@ -440,7 +442,7 @@ class Connect extends Component {
                                 <img id='networkGoerli' src={EthereumPic} alt="Ethereum" onClick={() => this.changeNetwork(chainIDs.EthereumMainnet)} className={
                                     this.props.network === chainIDs.EthereumMainnet ? "chosen-network" : ""
                                 } />
-                                <img id='networkBinanceTestnet' src={BinancePic} alt="Binance" onClick={() => this.changeNetwork(chainIDs.BinanceMainnet)} className={
+                                <img id='networkBinanceTestnet' src={BinancePic2} alt="Binance" onClick={() => this.changeNetwork(chainIDs.BinanceMainnet)} className={
                                     this.props.network === chainIDs.BinanceMainnet ? "chosen-network" : ""
                                 } />
                                 <img id='networkAvalanche' src={AvalanchePic} alt="Avalanche" onClick={() => this.changeNetwork(chainIDs.AvalancheMainnet)} className={
@@ -449,7 +451,7 @@ class Connect extends Component {
                                 <img id='networkOptimism' src={OptimismPic} alt="Optimism" onClick={() => this.changeNetwork(chainIDs.OptimismMainnet)} className={
                                     this.props.network === chainIDs.OptimismMainnet ? "chosen-network" : ""
                                 } />
-                                <img id='networkArbitrum' src={ArbitrumPic} alt="Arbitrum" onClick={() => this.changeNetwork(chainIDs.ArbitrumMainnet)} className={
+                                <img id='networkArbitrum' src={ArbitrumPic2} alt="Arbitrum" onClick={() => this.changeNetwork(chainIDs.ArbitrumMainnet)} className={
                                     this.props.network === chainIDs.ArbitrumMainnet ? "chosen-network" : ""
                                 } />
                             </Modal.Footer>
