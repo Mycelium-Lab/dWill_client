@@ -96,7 +96,7 @@ class App extends Component {
               10: chainRPCURL.OptimismMainnet
             }
           })
-          await provider.enable();
+          await provider.enable().catch(err=>console.log(err));
           const _provider = new ethers.providers.Web3Provider(provider)
           provider.on('accountsChanged', async (__accounts) => {
             if (__accounts.length === 0) {

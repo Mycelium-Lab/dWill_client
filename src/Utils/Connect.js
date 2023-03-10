@@ -125,7 +125,7 @@ class Connect extends Component {
                 }
             })
 
-            await provider.enable();
+            await provider.enable().catch(err=>console.log(err));
             const _provider = new ethers.providers.Web3Provider(provider)
             // const accounts = await _provider.send("eth_requestAccounts", []);
             const _signer = _provider.getSigner()
@@ -237,7 +237,7 @@ class Connect extends Component {
                     10: chainRPCURL.OptimismMainnet
                   }
             })
-            await provider.enable();
+            await provider.enable().catch(err=>console.log(err));
             if (chainId === chainIDs.Goerli && chainId !== this.props.network) {
                 await this._changeNetworkWalletConnect(provider, chainIDs.Goerli, 'Goerli', 'ETH', chainRPCURL.Goerli)
             }
@@ -285,7 +285,7 @@ class Connect extends Component {
                         10: chainRPCURL.OptimismMainnet
                       }
                 })
-                await provider.enable();
+                await provider.enable().catch(err=>console.log(err));
                 await provider.disconnect()
 
                 localStorage.removeItem('account')
