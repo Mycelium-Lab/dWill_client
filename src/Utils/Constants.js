@@ -9,7 +9,7 @@ export const TokenAddresses = {
 }
 export const TheWillAddress = '0xc9100D772b0Ddb8D435b54cee1Fe050cf7e5789B'
 export const TheWillAddresses = {
-    Mumbai: '0xf79236FACf56B264a0E146a2096126C1e28D7E31',
+    Mumbai: '0x8E00B1aea0BA83ab59863C92c8d462FC933c58B5',
     Polygon: '0x5f193874FBbEbc4bF792CDb51B763e90596773F6',
     BinanceTestnet: '0x4ad410e2d0d5508770666cd9be4e2Afa4dc912D1',
     BinanceMainnet: '0xE93519C3a0Df81D47AD044bc93e7e041E2ff564A',

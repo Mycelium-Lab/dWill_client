@@ -436,8 +436,8 @@ class Connect extends Component {
                                 <h1 className="modal-choose__title">Choose network</h1>
                             </Modal.Header>
                             <Modal.Footer>
-                                <img id='networkMumbai' src={PolygonPic} alt="Polygon" onClick={() => this.changeNetwork(chainIDs.Polygon)} className={
-                                    this.props.network === chainIDs.Polygon ? "chosen-network" : ""
+                                <img id='networkMumbai' src={PolygonPic} alt="Polygon" onClick={() => this.changeNetwork(chainIDs.Mumbai)} className={
+                                    this.props.network === chainIDs.Mumbai ? "chosen-network" : ""
                                 } />
                                 <img id='networkGoerli' src={EthereumPic} alt="Ethereum" onClick={() => this.changeNetwork(chainIDs.EthereumMainnet)} className={
                                     this.props.network === chainIDs.EthereumMainnet ? "chosen-network" : ""
