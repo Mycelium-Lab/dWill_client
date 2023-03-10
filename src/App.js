@@ -73,10 +73,10 @@ class App extends Component {
                 signerAddress: _accounts[0]
               })
             }
-            window.location.reload()
+           // window.location.reload()
           })
           window.ethereum.on('chainChanged', () => {
-            window.location.reload()
+            //window.location.reload()
           })
           localStorage.setItem('account', accounts[0]);
           localStorage.setItem('wallet', 'Metamask');
@@ -116,7 +116,7 @@ class App extends Component {
                 signerAddress: __accounts[0]
               })
             }
-            window.location.reload()
+            //window.location.reload()
           })
           provider.on('disconnect', () => {
             localStorage.removeItem('account')
@@ -129,7 +129,7 @@ class App extends Component {
             })
           })
           provider.on('chainChanged', () => {
-            window.location.reload()
+           // window.location.reload()
           })
           const _signer = _provider.getSigner()
           const _address = await _signer.getAddress()

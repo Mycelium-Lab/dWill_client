@@ -408,7 +408,7 @@ class Wills extends Component {
                     this.handleCloseAwait()
                     this.handleShowEventConfirmed(`dWill has been revoked`, tx.hash)
                     setTimeout(() => {
-                        window.location = '/'
+                       // window.location = '/'
                     }, 2000)
                     setTimeout(() => {
                         this.handleCloseEventConfirmed()
