@@ -89,7 +89,7 @@ class Connect extends Component {
             this.setState({ selectedAddress: accounts[0] })
             this.props.setProperties(provider, signer, accounts[0])
                 .then(() => {
-                    window.location.reload()
+                    //window.location.reload()
                 })
             window.ethereum.on('accountsChanged', async (accounts) => {
                 if (accounts.length === 0) {
@@ -102,7 +102,7 @@ class Connect extends Component {
                     const _signer = provider.getSigner()
                     this.props.setProperties(provider, _signer, accounts[0])
                 }
-                window.location.reload()
+                //window.location.reload()
             })
         } catch (error) {
             console.error(error)
@@ -137,7 +137,7 @@ class Connect extends Component {
             })
             this.props.setProperties(_provider, _signer, _address)
                 .then(() => {
-                    window.location.reload()
+                    //window.location.reload()
                 })
         } catch (error) {
             console.error(error)
@@ -150,7 +150,7 @@ class Connect extends Component {
                 method: 'wallet_switchEthereumChain',
                 params: [{ chainId: ethers.utils.hexValue(chainId) }]
             })
-                .then(() => window.location.reload())
+              //  .then(() => window.location.reload())
         } catch (err) {
             // This error code indicates that the chain has not been added to MetaMask
             if (err.code === 4902) {
@@ -175,7 +175,7 @@ class Connect extends Component {
                 method: 'wallet_switchEthereumChain',
                 params: [{ chainId: ethers.utils.hexValue(chainId) }]
             })
-                .then(() => window.location.reload())
+              //  .then(() => window.location.reload())
         } catch (error) {
             if (error.message.includes('Try adding the chain using wallet_addEthereumChain first')) {
                 await provider.request({
