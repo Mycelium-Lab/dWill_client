@@ -84,7 +84,6 @@ class App extends Component {
   componentDidMount = async () => {
     try {
       document.addEventListener("visibilitychange", function() {
-        console.log('jekrjlkjeljrkljlk')
         if (document.visibilityState === 'hidden' && iOS()) {
           handleWalletConnectDeepLink()
         }
@@ -139,6 +138,7 @@ class App extends Component {
             }
           })
           await provider.enable();
+          handleWalletConnectDeepLink()
           const _provider = new ethers.providers.Web3Provider(provider)
           provider.on('accountsChanged', async (__accounts) => {
             if (__accounts.length === 0) {
