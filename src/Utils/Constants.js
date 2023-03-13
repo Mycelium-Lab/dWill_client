@@ -33,7 +33,8 @@ export const chainIDs = {
 }
 export const chainRPCURL = {
     // Polygon: 'https://polygon-mainnet.g.alchemy.com/v2/B0XeubnwCZAJmAmGXAqtYarQGn9VQL1A',
-    Polygon: 'https://polygon-mainnet.g.alchemy.com/v2/PdErp7XIFnF7-ZveImUZxGqI7zwqDvZ6',
+    // Polygon: 'https://polygon-mainnet.g.alchemy.com/v2/PdErp7XIFnF7-ZveImUZxGqI7zwqDvZ6',
+    Polygon: 'https://rpc-mainnet.maticvigil.com',
     Mumbai: 'https://rpc-mumbai.maticvigil.com',
     BinanceTestnet: 'https://data-seed-prebsc-1-s1.binance.org:8545',
     BinanceMainnet: 'https://bsc-dataseed.binance.org',
