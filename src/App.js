@@ -24,6 +24,42 @@ import Main from './Main/Main';
 
 import { renderStars } from "./Utils/stars";
 
+   
+const iOS = () => {
+  return (
+    [
+      'iPad Simulator',
+      'iPhone Simulator',
+      'iPod Simulator',
+      'iPad',
+      'iPhone',
+      'iPod',
+    ].includes(navigator.platform) ||
+    // iPad on iOS 13 detection
+    (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
+  );
+}
+
+const handleWalletConnectDeepLink = () => {
+  const deepLink = window.localStorage.getItem(
+    'WALLETCONNECT_DEEPLINK_CHOICE'
+  )
+  if (deepLink) {
+    try {
+      const _deepLink= JSON.parse(deepLink)
+      if (_deepLink.href === 'https://link.trustwallet.com/wc') {
+        window.localStorage.setItem(
+          'WALLETCONNECT_DEEPLINK_CHOICE',
+          JSON.stringify({ name: 'Trust Wallet', href: 'trust://' })
+        )
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err) {
+      console.log('TrustWallet force redirect err', err)
+    }
+  }
+}
+
 class App extends Component {
 
   state = {
@@ -47,10 +83,10 @@ class App extends Component {
 
   componentDidMount = async () => {
     try {
-      document.addEventListener('visibilitychange', () => { 
-        if (document.visibilityState === 'hidden') { 
-            window.localStorage.removeItem('WALLETCONNECT_DEEPLINK_CHOICE'); 
-        } 
+      document.addEventListener("visibilitychange", function() {
+        if (document.visibilityState === 'hidden' && iOS()) {
+          handleWalletConnectDeepLink()
+        }
       });
       const localStorageAccount = localStorage.getItem('account')
       const walletType = localStorage.getItem('wallet')
