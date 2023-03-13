@@ -47,6 +47,11 @@ class App extends Component {
 
   componentDidMount = async () => {
     try {
+      document.addEventListener('visibilitychange', () => { 
+        if (document.visibilityState === 'hidden') { 
+            window.localStorage.removeItem('WALLETCONNECT_DEEPLINK_CHOICE'); 
+        } 
+      });
       const localStorageAccount = localStorage.getItem('account')
       const walletType = localStorage.getItem('wallet')
       const walletconnect = localStorage.getItem('walletconnect')
