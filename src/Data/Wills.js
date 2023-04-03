@@ -1016,7 +1016,7 @@ class Wills extends Component {
                                                         </span>
                                                     </div>
                                                     <div className="your-wills__btns">
-                                                        <button className="btn_btns btn-default"
+                                                        <button className="btn_btns btn-default edit_open_modal_gtag"
                                                             onClick={
                                                                 this.state.showEdit === false
                                                                     ?
@@ -1196,7 +1196,7 @@ class Wills extends Component {
                                         </div>
                                     </li>
                                     <li>
-                                        <Button variant="primary" disabled={
+                                        <Button className='edit_call_gtag' variant="primary" disabled={
                                             this.checkIfNotChanged(false)
                                         } onClick={this.state.approved === true ? this.edit : null} style={
                                             {
