@@ -400,10 +400,18 @@ class Connect extends Component {
                             <Modal.Header>
                                 <h1>Choose wallet</h1>
                             </Modal.Header>
-                            <Modal.Body>
-                                <button onClick={() => this.connectToMetamask()}><img src={btnMetamask}></img></button>
-                                <button onClick={() => this.walletConnect()}><img src={btnWallet}></img></button>
-                            </Modal.Body>
+                            {
+                                window.mobileCheck()
+                                ?
+                                <Modal.Body>
+                                    <button onClick={() => this.walletConnect()}><img src={btnWallet}></img></button>
+                                </Modal.Body>
+                                :
+                                <Modal.Body>
+                                    <button onClick={() => this.connectToMetamask()}><img src={btnMetamask}></img></button>
+                                    <button onClick={() => this.walletConnect()}><img src={btnWallet}></img></button>
+                                </Modal.Body>
+                            }
                             <Modal.Footer>
                                 <p className='title_trusted-wallet'>What is a wallet?</p>
                                 <p className='title_trusted-wallet'>Wallets are used to send, receive, and store digital
