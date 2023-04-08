@@ -314,6 +314,7 @@ class Connect extends Component {
                 localStorage.removeItem('wallet')
                 this.props.setProperties(null, null, null)
             }
+            this.props.handleConnect(false)
         } catch (error) {
             console.log(error)
         }
@@ -395,6 +396,7 @@ class Connect extends Component {
             if (!localStorage.getItem('account')) {
                 return (
                     <div>
+                        { this.props.isConnect && this.connectToMetamask() }
                         <button id='connect-button' onClick={this.state.showWallets === false ? this.showWalletsModal : this.closeWalletsModal}>Connect Wallet</button>
                         <Modal className="modal-choose-wallet" show={this.state.showWallets}>
                             <Modal.Header>

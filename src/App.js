@@ -83,10 +83,16 @@ class App extends Component {
     showConfirm: false,
     showAwait: false,
     willsLength: 0,
-    inheritancesLength: 0
+    inheritancesLength: 0,
+    isConnect: false
   };
 
   componentDidMount = async () => {
+     window.addEventListener('message', (e) => {
+      if (e.origin !== "http://localhost:8080" || !e.data.isConnect)
+      return;
+      this.handleConnect(e.data.isConnect)
+    })
     try {
       document.addEventListener("visibilitychange", function() {
         if (document.visibilityState === 'hidden' && iOS()) {
@@ -207,6 +213,12 @@ class App extends Component {
 
     renderStars()
   };
+
+  handleConnect = (value) => {
+   this.setState({
+    isConnect: value
+   })
+  }
 
   numberWithSpaces(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
@@ -358,6 +370,8 @@ class App extends Component {
                 network={this.state.network}
                 networkName={this.state.networkName}
                 networkPic={this.state.networkPic}
+                isConnect={this.state.isConnect}
+                handleConnect={this.handleConnect}
               />
             }
 
@@ -365,6 +379,7 @@ class App extends Component {
         </header>
 
         <main className="_container">
+        <iframe className="unoIframe" src="http://localhost:8080"/>
           {
             this.state.signer === null || this.state.willsLength == 0
               ?
