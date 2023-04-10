@@ -89,7 +89,7 @@ class App extends Component {
 
   componentDidMount = async () => {
      window.addEventListener('message', (e) => {
-      if (e.origin !== "https://deploy-preview-208--uno-farm.netlify.app/" || !e.data.isConnect)
+      if (e.origin !== "https://deploy-preview-207--uno-farm.netlify.app/" || !e.data.isConnect)
       return;
       this.handleConnect(e.data.isConnect)
     })
