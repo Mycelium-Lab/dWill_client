@@ -86,7 +86,7 @@ class App extends Component {
     inheritancesLength: 0,
     isConnect: false,
     origin: process.env.NODE_ENV === "development" ? 'http://localhost:8080' 
-    : 'https://deploy-preview-208--uno-farm.netlify.app/'
+    : 'https://deploy-preview-207--uno-farm.netlify.app/'
   };
 
   componentDidMount = async () => {
