@@ -30,9 +30,9 @@ class Main extends Component {
         return (
             <div className='main-text'>
                 {/* <h1 className="block-one__title">Hello!</h1> */}
-                <h3 className="block-one">dWill - the first fully decentralized way to bequeath your cryptocurrency.</h3>
-                <p className="block-two">dWill - the first decentralized non-custodial inheritance protocol. With dWill, you can bequeath tokens from your cryptocurrency wallet to the trusted wallets of your family and friends (or, for example, to your reserve wallet)</p>
-                <p className="block-two">Thanks to smart contract technology, dWill works completely in a decentralized way, reliably and autonomously. No one (no one at all, not even the project team) will have access to the funds you bequeathed.&nbsp;<a href='https://dwill.slite.page/p/yFyU0Vhz-TJakC/dWIll' target="_blank" rel="noreferrer">Read more about how it works.</a>
+                <h3 className="block-one">dWill - the first fully decentralized reliable way to secure & inherit your cryptocurrency.</h3>
+                <p className="block-two">In the event of loss of access to the wallet or death of the wallet owner, dWill automatically recover the funds stuck in it.</p>
+                <p className="block-two">If your wallet is inactive (no transactions) for more than the specified amount of time, dWill will send your funds to a trusted wallet (yours or your family's). Thanks to smart contract technology, dWill is completely decentralized, reliable and autonomous. No one (not even the project team) will have access to the funds you have secured.&nbsp;<a href='https://dwill.slite.page/p/yFyU0Vhz-TJakC/dWIll' target="_blank" rel="noreferrer">Read more about how it works.</a>
                 </p>
                 {
                     (this.props.inheritancesLength == 0 || this.props.signer === null)
