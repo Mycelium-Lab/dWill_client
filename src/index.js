@@ -5,6 +5,9 @@ import './fonts/stylesheet.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+
+window.onerror = (error) => {console.log(error)}
+window.onunhandledrejection = (error) => {console.log(error)}
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

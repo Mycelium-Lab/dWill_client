@@ -23,6 +23,7 @@ import Data from './Data/Data';
 import Main from './Main/Main';
 
 import { renderStars } from "./Utils/stars";
+import { EthereumProvider } from "@walletconnect/ethereum-provider";
 
 window.mobileCheck = function() {
   let check = false;
@@ -46,23 +47,23 @@ const iOS = () => {
 }
 
 const handleWalletConnectDeepLink = () => {
-  const deepLink = window.localStorage.getItem(
-    'WALLETCONNECT_DEEPLINK_CHOICE'
-  )
-  if (deepLink) {
-    try {
-      const _deepLink= JSON.parse(deepLink)
-      if (_deepLink.href === 'https://link.trustwallet.com/wc') {
-        window.localStorage.setItem(
-          'WALLETCONNECT_DEEPLINK_CHOICE',
-          JSON.stringify({ name: 'Trust Wallet', href: 'trust://' })
-        )
-      }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err) {
-      console.log('TrustWallet force redirect err', err)
-    }
-  }
+  // const deepLink = window.localStorage.getItem(
+  //   'WALLETCONNECT_DEEPLINK_CHOICE'
+  // )
+  // if (deepLink) {
+  //   try {
+  //     const _deepLink= JSON.parse(deepLink)
+  //     if (_deepLink.href === 'https://link.trustwallet.com/wc') {
+  //       window.localStorage.setItem(
+  //         'WALLETCONNECT_DEEPLINK_CHOICE',
+  //         JSON.stringify({ name: 'Trust Wallet', href: 'trust://' })
+  //       )
+  //     }
+  //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  //   } catch (err) {
+  //     console.log('TrustWallet force redirect err', err)
+  //   }
+  // }
 }
 
 class App extends Component {
@@ -85,6 +86,10 @@ class App extends Component {
     willsLength: 0,
     inheritancesLength: 0
   };
+
+  componentDidCatch = (error, errorInfo) => {
+    console.log(error, errorInfo)
+  }
 
   componentDidMount = async () => {
     try {
@@ -129,18 +134,39 @@ class App extends Component {
           this.setProperties(provider, signer, accounts[0])
         }
         if (walletType === 'WalletConnect' || walletconnect !== null) {
-          const provider = new WalletConnectProvider({
-            rpc: {
-              80001: chainRPCURL.Mumbai,
-              97: chainRPCURL.BinanceTestnet,
-              5: chainRPCURL.Goerli,
-              137: chainRPCURL.Polygon,
-              56: chainRPCURL.BinanceMainnet,
-              1: chainRPCURL.EthereumMainnet,
-              42161: chainRPCURL.ArbitrumMainnet,
-              43114: chainRPCURL.AvalancheMainnet,
-              10: chainRPCURL.OptimismMainnet
-            }
+          const provider = await EthereumProvider.init({
+            projectId: '8712657075b467bcabe8428c360ddb0c',
+            chains: [chainIDs.EthereumMainnet],
+            optionalChains: [chainIDs.Polygon, chainIDs.ArbitrumMainnet, chainIDs.AvalancheMainnet, chainIDs.BinanceMainnet, chainIDs.OptimismMainnet],
+            showQrModal: true,
+            methods: [
+              "personal_sign",
+              "eth_sendTransaction",
+              "eth_accounts",
+              "eth_requestAccounts",
+              "eth_call",
+              "eth_getBalance",
+              "eth_sendRawTransaction",
+              "eth_sign",
+              "eth_signTransaction",
+              "eth_signTypedData",
+              "eth_signTypedData_v3",
+              "eth_signTypedData_v4",
+              "wallet_switchEthereumChain",
+              "wallet_addEthereumChain",
+              "wallet_getPermissions",
+              "wallet_requestPermissions",
+              "wallet_registerOnboarding",
+              "wallet_watchAsset",
+              "wallet_scanQRCode"
+            ],
+            events: [
+                'accountsChanged',
+                'chainChanged',
+                'message',
+                'connect',
+                'disconnect'
+            ]
           })
           await provider.enable();
           handleWalletConnectDeepLink()
