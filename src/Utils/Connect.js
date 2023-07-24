@@ -13,7 +13,7 @@ import btnWallet from '../content/btn-wallet.svg'
 import logoutPic from '../content/logout.svg'
 import chengeNetwork from '../content/chenge-network.svg'
 import { ethers } from "ethers";
-import WalletConnectProvider from "@walletconnect/web3-provider";
+import { EthereumProvider } from "@walletconnect/ethereum-provider";
 import { chainIDs, chainRPCURL } from '../Utils/Constants.js'
 
 class Connect extends Component {
@@ -111,20 +111,40 @@ class Connect extends Component {
 
     async walletConnect() {
         try {
-            const provider = new WalletConnectProvider({
-                rpc: {
-                    80001: chainRPCURL.Mumbai,
-                    97: chainRPCURL.BinanceTestnet,
-                    5: chainRPCURL.Goerli,
-                    137: chainRPCURL.Polygon,
-                    56: chainRPCURL.BinanceMainnet,
-                    1: chainRPCURL.EthereumMainnet,
-                    42161: chainRPCURL.ArbitrumMainnet,
-                    43114: chainRPCURL.AvalancheMainnet,
-                    10: chainRPCURL.OptimismMainnet
-                }
+            const provider = await EthereumProvider.init({
+                projectId: '8712657075b467bcabe8428c360ddb0c',
+                chains: [chainIDs.EthereumMainnet],
+                optionalChains: [chainIDs.Polygon, chainIDs.ArbitrumMainnet, chainIDs.AvalancheMainnet, chainIDs.BinanceMainnet, chainIDs.OptimismMainnet],
+                showQrModal: true,
+                methods: [
+                  "personal_sign",
+                  "eth_sendTransaction",
+                  "eth_accounts",
+                  "eth_requestAccounts",
+                  "eth_call",
+                  "eth_getBalance",
+                  "eth_sendRawTransaction",
+                  "eth_sign",
+                  "eth_signTransaction",
+                  "eth_signTypedData",
+                  "eth_signTypedData_v3",
+                  "eth_signTypedData_v4",
+                  "wallet_switchEthereumChain",
+                  "wallet_addEthereumChain",
+                  "wallet_getPermissions",
+                  "wallet_requestPermissions",
+                  "wallet_registerOnboarding",
+                  "wallet_watchAsset",
+                  "wallet_scanQRCode"
+                ],
+                events: [
+                    'accountsChanged',
+                    'chainChanged',
+                    'message',
+                    'connect',
+                    'disconnect'
+                ]
             })
-
             await provider.enable();
             const deepLink = window.localStorage.getItem(
                 'WALLETCONNECT_DEEPLINK_CHOICE'
@@ -241,18 +261,39 @@ class Connect extends Component {
                 await this._changeNetwork(chainIDs.ArbitrumMainnet, 'Arbitrum', 'ETH', chainRPCURL.ArbitrumMainnet)
             }
         } else if (wallet === 'WalletConnect') {
-            const provider = new WalletConnectProvider({
-                rpc: {
-                    80001: chainRPCURL.Mumbai,
-                    97: chainRPCURL.BinanceTestnet,
-                    5: chainRPCURL.Goerli,
-                    137: chainRPCURL.Polygon,
-                    56: chainRPCURL.BinanceMainnet,
-                    1: chainRPCURL.EthereumMainnet,
-                    42161: chainRPCURL.ArbitrumMainnet,
-                    43114: chainRPCURL.AvalancheMainnet,
-                    10: chainRPCURL.OptimismMainnet
-                  }
+            const provider = await EthereumProvider.init({
+                projectId: '8712657075b467bcabe8428c360ddb0c',
+                chains: [chainIDs.EthereumMainnet],
+                optionalChains: [chainIDs.Polygon, chainIDs.ArbitrumMainnet, chainIDs.AvalancheMainnet, chainIDs.BinanceMainnet, chainIDs.OptimismMainnet],
+                showQrModal: true,
+                methods: [
+                  "personal_sign",
+                  "eth_sendTransaction",
+                  "eth_accounts",
+                  "eth_requestAccounts",
+                  "eth_call",
+                  "eth_getBalance",
+                  "eth_sendRawTransaction",
+                  "eth_sign",
+                  "eth_signTransaction",
+                  "eth_signTypedData",
+                  "eth_signTypedData_v3",
+                  "eth_signTypedData_v4",
+                  "wallet_switchEthereumChain",
+                  "wallet_addEthereumChain",
+                  "wallet_getPermissions",
+                  "wallet_requestPermissions",
+                  "wallet_registerOnboarding",
+                  "wallet_watchAsset",
+                  "wallet_scanQRCode"
+                ],
+                events: [
+                    'accountsChanged',
+                    'chainChanged',
+                    'message',
+                    'connect',
+                    'disconnect'
+                ]
             })
             await provider.enable();
             if (chainId === chainIDs.Goerli && chainId !== this.props.network) {
@@ -289,18 +330,39 @@ class Connect extends Component {
         try {
             const wallet = localStorage.getItem('wallet')
             if (wallet === 'WalletConnect') {
-                const provider = new WalletConnectProvider({
-                    rpc: {
-                        80001: chainRPCURL.Mumbai,
-                        97: chainRPCURL.BinanceTestnet,
-                        5: chainRPCURL.Goerli,
-                        137: chainRPCURL.Polygon,
-                        56: chainRPCURL.BinanceMainnet,
-                        1: chainRPCURL.EthereumMainnet,
-                        42161: chainRPCURL.ArbitrumMainnet,
-                        43114: chainRPCURL.AvalancheMainnet,
-                        10: chainRPCURL.OptimismMainnet
-                      }
+                const provider = await EthereumProvider.init({
+                    projectId: '8712657075b467bcabe8428c360ddb0c',
+                    chains: [chainIDs.EthereumMainnet],
+                    optionalChains: [chainIDs.Polygon, chainIDs.ArbitrumMainnet, chainIDs.AvalancheMainnet, chainIDs.BinanceMainnet, chainIDs.OptimismMainnet],
+                    showQrModal: true,
+                    methods: [
+                      "personal_sign",
+                      "eth_sendTransaction",
+                      "eth_accounts",
+                      "eth_requestAccounts",
+                      "eth_call",
+                      "eth_getBalance",
+                      "eth_sendRawTransaction",
+                      "eth_sign",
+                      "eth_signTransaction",
+                      "eth_signTypedData",
+                      "eth_signTypedData_v3",
+                      "eth_signTypedData_v4",
+                      "wallet_switchEthereumChain",
+                      "wallet_addEthereumChain",
+                      "wallet_getPermissions",
+                      "wallet_requestPermissions",
+                      "wallet_registerOnboarding",
+                      "wallet_watchAsset",
+                      "wallet_scanQRCode"
+                    ],
+                    events: [
+                        'accountsChanged',
+                        'chainChanged',
+                        'message',
+                        'connect',
+                        'disconnect'
+                    ]
                 })
                 await provider.enable();
                 await provider.disconnect()
