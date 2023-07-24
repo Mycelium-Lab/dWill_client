@@ -47,23 +47,23 @@ const iOS = () => {
 }
 
 const handleWalletConnectDeepLink = () => {
-  // const deepLink = window.localStorage.getItem(
-  //   'WALLETCONNECT_DEEPLINK_CHOICE'
-  // )
-  // if (deepLink) {
-  //   try {
-  //     const _deepLink= JSON.parse(deepLink)
-  //     if (_deepLink.href === 'https://link.trustwallet.com/wc') {
-  //       window.localStorage.setItem(
-  //         'WALLETCONNECT_DEEPLINK_CHOICE',
-  //         JSON.stringify({ name: 'Trust Wallet', href: 'trust://' })
-  //       )
-  //     }
-  //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //   } catch (err) {
-  //     console.log('TrustWallet force redirect err', err)
-  //   }
-  // }
+  const deepLink = window.localStorage.getItem(
+    'WALLETCONNECT_DEEPLINK_CHOICE'
+  )
+  if (deepLink) {
+    try {
+      const _deepLink= JSON.parse(deepLink)
+      if (_deepLink.href === 'https://link.trustwallet.com/wc') {
+        window.localStorage.setItem(
+          'WALLETCONNECT_DEEPLINK_CHOICE',
+          JSON.stringify({ name: 'Trust Wallet', href: 'trust://' })
+        )
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err) {
+      console.log('TrustWallet force redirect err', err)
+    }
+  }
 }
 
 class App extends Component {
