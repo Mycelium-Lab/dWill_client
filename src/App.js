@@ -152,13 +152,15 @@ class App extends Component {
               "eth_signTypedData",
               "eth_signTypedData_v3",
               "eth_signTypedData_v4",
-              "wallet_switchEthereumChain",
-              "wallet_addEthereumChain",
               "wallet_getPermissions",
               "wallet_requestPermissions",
               "wallet_registerOnboarding",
               "wallet_watchAsset",
               "wallet_scanQRCode"
+            ],
+            optionalMethods: [
+              "wallet_switchEthereumChain",
+              "wallet_addEthereumChain"
             ],
             events: [
                 'accountsChanged',

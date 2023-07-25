@@ -212,7 +212,7 @@ class Connect extends Component {
                 method: 'wallet_switchEthereumChain',
                 params: [{ chainId: ethers.utils.hexValue(chainId) }]
             })
-                .then(() => window.location.reload())
+                // .then(() => window.location.reload())
         } catch (error) {
             if (error.message.includes('Try adding the chain using wallet_addEthereumChain first')) {
                 await provider.request({
@@ -261,11 +261,12 @@ class Connect extends Component {
                 await this._changeNetwork(chainIDs.ArbitrumMainnet, 'Arbitrum', 'ETH', chainRPCURL.ArbitrumMainnet)
             }
         } else if (wallet === 'WalletConnect') {
+            const optionalChains = Object.entries(chainIDs).filter(v => v[1] !== this.props.network)
             const provider = await EthereumProvider.init({
                 projectId: '8712657075b467bcabe8428c360ddb0c',
-                chains: [chainIDs.EthereumMainnet],
-                optionalChains: [chainIDs.Polygon, chainIDs.ArbitrumMainnet, chainIDs.AvalancheMainnet, chainIDs.BinanceMainnet, chainIDs.OptimismMainnet],
-                showQrModal: true,
+                chains: [this.props.network],
+                optionalChains: optionalChains.map((v) => v[1]),
+                showQrModal: false,
                 methods: [
                   "personal_sign",
                   "eth_sendTransaction",
@@ -279,14 +280,13 @@ class Connect extends Component {
                   "eth_signTypedData",
                   "eth_signTypedData_v3",
                   "eth_signTypedData_v4",
-                  "wallet_switchEthereumChain",
-                  "wallet_addEthereumChain",
                   "wallet_getPermissions",
                   "wallet_requestPermissions",
                   "wallet_registerOnboarding",
                   "wallet_watchAsset",
                   "wallet_scanQRCode"
                 ],
+                optionalMethods: ["wallet_switchEthereumChain", "wallet_addEthereumChain"],
                 events: [
                     'accountsChanged',
                     'chainChanged',

@@ -38,11 +38,11 @@ export const chainRPCURL = {
     Mumbai: 'https://rpc-mumbai.maticvigil.com',
     BinanceTestnet: 'https://data-seed-prebsc-1-s1.binance.org:8545',
     BinanceMainnet: 'https://bsc-dataseed.binance.org',
-    EthereumMainnet: 'https://eth-mainnet.g.alchemy.com/v2/XuX_l4hiqr_xf2CBBmdo7GMHcW0ZJ923',
+    EthereumMainnet: 'https://mainnet.infura.io/v3',
     Goerli: 'https://goerli.infura.io/v3/',
-    AvalancheMainnet: 'https://rpc.ankr.com/avalanche',
-    ArbitrumMainnet: 'https://arb-mainnet.g.alchemy.com/v2/owpRYif1L9NLrHMysh6SPHg_c0eiCYFz',
-    OptimismMainnet: 'https://opt-mainnet.g.alchemy.com/v2/r2Y15pOCmYjzWruKk2eIKmJQEz1WhvDK'
+    AvalancheMainnet: 'https://api.avax.network/ext/bc/C/rpc',
+    ArbitrumMainnet: 'https://arbitrum-mainnet.infura.io/v3',
+    OptimismMainnet: 'https://optimism-mainnet.infura.io/v3'
 }
 export const NetworkProviders = {
     Polygon: 'https://explorer.matic.network',
