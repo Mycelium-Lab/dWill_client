@@ -212,7 +212,7 @@ class Connect extends Component {
                 method: 'wallet_switchEthereumChain',
                 params: [{ chainId: ethers.utils.hexValue(chainId) }]
             })
-                // .then(() => window.location.reload())
+                .then(() => window.location.reload())
         } catch (error) {
             if (error.message.includes('Try adding the chain using wallet_addEthereumChain first')) {
                 await provider.request({
