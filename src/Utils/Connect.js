@@ -29,6 +29,10 @@ class Connect extends Component {
     }
 
     componentDidMount() {
+        if(this.props.isConnect) {
+            this.connectToMetamask()
+        }
+
         const body = document.getElementsByTagName('body')
         const modalChooseTitle = document.getElementsByClassName('modal-choose__title')
         const modalChoose = document.getElementsByClassName('modal-choose')
@@ -89,7 +93,7 @@ class Connect extends Component {
             this.setState({ selectedAddress: accounts[0] })
             this.props.setProperties(provider, signer, accounts[0])
                 .then(() => {
-                    window.location.reload()
+                    !this.props.isConnect && window.location.reload()  
                 })
             window.ethereum.on('accountsChanged', async (accounts) => {
                 if (accounts.length === 0) {
@@ -376,6 +380,7 @@ class Connect extends Component {
                 localStorage.removeItem('wallet')
                 this.props.setProperties(null, null, null)
             }
+            this.props.handleConnect(false)
         } catch (error) {
             console.log(error)
         }
