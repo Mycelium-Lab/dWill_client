@@ -117,7 +117,9 @@ class Connect extends Component {
                 optionalChains: [chainIDs.Polygon, chainIDs.ArbitrumMainnet, chainIDs.AvalancheMainnet, chainIDs.BinanceMainnet, chainIDs.OptimismMainnet],
                 showQrModal: true,
                 methods: [
-                  "personal_sign",
+                  "personal_sign"
+                ],
+                optionalMethods: [
                   "eth_sendTransaction",
                   "eth_accounts",
                   "eth_requestAccounts",
@@ -137,7 +139,7 @@ class Connect extends Component {
                   "wallet_watchAsset",
                   "wallet_scanQRCode"
                 ],
-                events: [
+                optionalEvents: [
                     'accountsChanged',
                     'chainChanged',
                     'message',
@@ -267,27 +269,29 @@ class Connect extends Component {
                 optionalChains: [chainIDs.Polygon, chainIDs.ArbitrumMainnet, chainIDs.AvalancheMainnet, chainIDs.BinanceMainnet, chainIDs.OptimismMainnet],
                 showQrModal: true,
                 methods: [
-                  "personal_sign",
-                  "eth_sendTransaction",
-                  "eth_accounts",
-                  "eth_requestAccounts",
-                  "eth_call",
-                  "eth_getBalance",
-                  "eth_sendRawTransaction",
-                  "eth_sign",
-                  "eth_signTransaction",
-                  "eth_signTypedData",
-                  "eth_signTypedData_v3",
-                  "eth_signTypedData_v4",
-                  "wallet_switchEthereumChain",
-                  "wallet_addEthereumChain",
-                  "wallet_getPermissions",
-                  "wallet_requestPermissions",
-                  "wallet_registerOnboarding",
-                  "wallet_watchAsset",
-                  "wallet_scanQRCode"
+                    "personal_sign"
                 ],
-                events: [
+                optionalMethods: [
+                "eth_sendTransaction",
+                "eth_accounts",
+                "eth_requestAccounts",
+                "eth_call",
+                "eth_getBalance",
+                "eth_sendRawTransaction",
+                "eth_sign",
+                "eth_signTransaction",
+                "eth_signTypedData",
+                "eth_signTypedData_v3",
+                "eth_signTypedData_v4",
+                "wallet_switchEthereumChain",
+                "wallet_addEthereumChain",
+                "wallet_getPermissions",
+                "wallet_requestPermissions",
+                "wallet_registerOnboarding",
+                "wallet_watchAsset",
+                "wallet_scanQRCode"
+                ],
+                optionalEvents: [
                     'accountsChanged',
                     'chainChanged',
                     'message',
@@ -336,27 +340,29 @@ class Connect extends Component {
                     optionalChains: [chainIDs.Polygon, chainIDs.ArbitrumMainnet, chainIDs.AvalancheMainnet, chainIDs.BinanceMainnet, chainIDs.OptimismMainnet],
                     showQrModal: true,
                     methods: [
-                      "personal_sign",
-                      "eth_sendTransaction",
-                      "eth_accounts",
-                      "eth_requestAccounts",
-                      "eth_call",
-                      "eth_getBalance",
-                      "eth_sendRawTransaction",
-                      "eth_sign",
-                      "eth_signTransaction",
-                      "eth_signTypedData",
-                      "eth_signTypedData_v3",
-                      "eth_signTypedData_v4",
-                      "wallet_switchEthereumChain",
-                      "wallet_addEthereumChain",
-                      "wallet_getPermissions",
-                      "wallet_requestPermissions",
-                      "wallet_registerOnboarding",
-                      "wallet_watchAsset",
-                      "wallet_scanQRCode"
+                        "personal_sign"
                     ],
-                    events: [
+                    optionalMethods: [
+                        "eth_sendTransaction",
+                        "eth_accounts",
+                        "eth_requestAccounts",
+                        "eth_call",
+                        "eth_getBalance",
+                        "eth_sendRawTransaction",
+                        "eth_sign",
+                        "eth_signTransaction",
+                        "eth_signTypedData",
+                        "eth_signTypedData_v3",
+                        "eth_signTypedData_v4",
+                        "wallet_switchEthereumChain",
+                        "wallet_addEthereumChain",
+                        "wallet_getPermissions",
+                        "wallet_requestPermissions",
+                        "wallet_registerOnboarding",
+                        "wallet_watchAsset",
+                        "wallet_scanQRCode"
+                    ],
+                    optionalEvents: [
                         'accountsChanged',
                         'chainChanged',
                         'message',

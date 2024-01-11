@@ -140,7 +140,9 @@ class App extends Component {
             optionalChains: [chainIDs.Polygon, chainIDs.ArbitrumMainnet, chainIDs.AvalancheMainnet, chainIDs.BinanceMainnet, chainIDs.OptimismMainnet],
             showQrModal: true,
             methods: [
-              "personal_sign",
+              "personal_sign"
+            ],
+            optionalMethods: [
               "eth_sendTransaction",
               "eth_accounts",
               "eth_requestAccounts",
@@ -160,7 +162,7 @@ class App extends Component {
               "wallet_watchAsset",
               "wallet_scanQRCode"
             ],
-            events: [
+            optionalEvents: [
                 'accountsChanged',
                 'chainChanged',
                 'message',
