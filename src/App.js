@@ -84,7 +84,10 @@ class App extends Component {
     showConfirm: false,
     showAwait: false,
     willsLength: 0,
-    inheritancesLength: 0
+    inheritancesLength: 0,
+    isConnect: false,
+    origin: process.env.NODE_ENV === "development" ? 'http://localhost:8080' 
+    : 'https://deploy-preview-207--uno-farm.netlify.app/'
   };
 
   componentDidCatch = (error, errorInfo) => {
@@ -92,6 +95,12 @@ class App extends Component {
   }
 
   componentDidMount = async () => {
+    console.log(process.env.NODE_ENV, origin)
+    window.addEventListener('message', (e) => {
+      if (!e.data.isConnect)
+      return;
+      this.handleConnect(e.data.isConnect)
+    })
     try {
       document.addEventListener("visibilitychange", function() {
         if (document.visibilityState === 'hidden' && iOS()) {
@@ -235,6 +244,12 @@ class App extends Component {
 
     renderStars()
   };
+
+  handleConnect = (value) => {
+   this.setState({
+    isConnect: value
+   })
+  }
 
   numberWithSpaces(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
@@ -386,6 +401,9 @@ class App extends Component {
                 network={this.state.network}
                 networkName={this.state.networkName}
                 networkPic={this.state.networkPic}
+                isConnect={this.state.isConnect}
+                key={this.state.isConnect}
+                handleConnect={this.handleConnect}
               />
             }
 
@@ -393,6 +411,7 @@ class App extends Component {
         </header>
 
         <main className="_container">
+        <iframe className="unoIframe" src={this.state.origin}/>
           {
             this.state.signer === null || this.state.willsLength == 0
               ?
