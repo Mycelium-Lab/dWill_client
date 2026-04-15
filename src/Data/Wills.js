@@ -1186,7 +1186,7 @@ class Wills extends Component {
                                             {
                                                 "background":
                                                         this.checkIfNotChanged(true)
-                                                        ? '#3E474F' : '#5ED5A8'
+                                                        ? '#CBD5E1' : '#7fd3ab'
                                             }
                                         } >
                                             Approve
@@ -1202,7 +1202,7 @@ class Wills extends Component {
                                             {
                                                 "background":
                                                         this.checkIfNotChanged(false)
-                                                        ? '#3E474F' : '#5ED5A8'
+                                                        ? '#CBD5E1' : '#7fd3ab'
                                             }
                                         } >
                                             Edit

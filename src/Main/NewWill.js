@@ -33,15 +33,89 @@ import OptimismTokens from '../Utils/tokens/optimism.json'
 import { select } from '../Utils/styles/select'
 import { tooltipText } from '../Utils/tooltipText';
 
-const { Option } = components;
+const { Option, SingleValue } = components;
+
+const tokenIconCache = new Map();
+const tokenIconPrefetchQueue = new Set();
+
+const TokenIcon = ({ src, alt }) => {
+    const [status, setStatus] = React.useState(() => {
+        if (!src) {
+            return 'failed';
+        }
+        return tokenIconCache.get(src) || 'idle';
+    });
+
+    React.useEffect(() => {
+        if (!src) {
+            setStatus('failed');
+            return undefined;
+        }
+        const cachedStatus = tokenIconCache.get(src);
+        if (cachedStatus === 'loaded' || cachedStatus === 'failed') {
+            setStatus(cachedStatus);
+            return undefined;
+        }
+        let isMounted = true;
+        const img = new Image();
+        img.decoding = 'async';
+        img.referrerPolicy = 'no-referrer';
+        img.src = src;
+        img.onload = () => {
+            tokenIconCache.set(src, 'loaded');
+            if (isMounted) {
+                setStatus('loaded');
+            }
+        };
+        img.onerror = () => {
+            tokenIconCache.set(src, 'failed');
+            if (isMounted) {
+                setStatus('failed');
+            }
+        };
+        return () => {
+            isMounted = false;
+        };
+    }, [src]);
+
+    if (status !== 'loaded') {
+        const fallbackLetter = (alt || '?').charAt(0).toUpperCase();
+        return (
+            <span className="select-pic select-pic--fallback" aria-hidden="true">
+                {fallbackLetter}
+            </span>
+        );
+    }
+    return (
+        <img
+            className="select-pic"
+            src={src}
+            alt={alt}
+            loading="lazy"
+            decoding="async"
+            referrerPolicy="no-referrer"
+            onError={() => {
+                tokenIconCache.set(src, 'failed');
+                setStatus('failed');
+            }}
+        />
+    );
+};
+
 const IconOption = props => (
     <Option {...props}>
-        <img className="select-pic"
-            src={props.data.icon}
-            alt={props.data.label}
-        />
+        <TokenIcon src={props.data.icon} alt={props.data.label} />
         {props.data.label}
     </Option>
+);
+
+const IconSingleValue = props => (
+    <SingleValue {...props}>
+        <span className="select-value-with-icon">
+            <TokenIcon src={props.data.icon} alt={props.data.label} />
+            <span>{props.data.label}</span>
+        </span>
+    </SingleValue>
 );
 
 const styles = {
@@ -63,6 +137,7 @@ Date.prototype.addDays = function (days) {
 class NewWill extends Component {
     constructor(props) {
         super(props);
+        this.tokensOptionsByNetwork = new Map();
         this.state = {
             signer: null,
             signerAddress: '',
@@ -233,6 +308,47 @@ class NewWill extends Component {
             return UniswapTokens.tokens.filter((v) => v.chainId === chainIDs.ArbitrumMainnet)
         }
         return []
+    }
+
+    getTokenOptions() {
+        const networkId = this.props.network;
+        if (this.tokensOptionsByNetwork.has(networkId)) {
+            return this.tokensOptionsByNetwork.get(networkId);
+        }
+        const options = this.getTokensLists()
+            .filter((token) => token && token.address && token.symbol)
+            .map((token) => ({
+                value: token.address,
+                label: token.symbol,
+                icon: token.logoURI || ''
+            }));
+        this.tokensOptionsByNetwork.set(networkId, options);
+        return options;
+    }
+
+    prefetchTokenIcons() {
+        const priorityTokens = this.getTokenOptions().slice(0, 40);
+        priorityTokens.forEach((token) => {
+            if (!token.icon) {
+                return;
+            }
+            if (tokenIconCache.has(token.icon) || tokenIconPrefetchQueue.has(token.icon)) {
+                return;
+            }
+            tokenIconPrefetchQueue.add(token.icon);
+            const img = new Image();
+            img.decoding = 'async';
+            img.referrerPolicy = 'no-referrer';
+            img.src = token.icon;
+            img.onload = () => {
+                tokenIconCache.set(token.icon, 'loaded');
+                tokenIconPrefetchQueue.delete(token.icon);
+            };
+            img.onerror = () => {
+                tokenIconCache.set(token.icon, 'failed');
+                tokenIconPrefetchQueue.delete(token.icon);
+            };
+        });
     }
 
     async approve() {
@@ -596,6 +712,7 @@ class NewWill extends Component {
         notificationsOn: false
     });
     handleShow = () => {
+        this.prefetchTokenIcons();
         this.setState({ show: true })
     };
 
@@ -668,10 +785,9 @@ class NewWill extends Component {
                 <div className='modal_fade'></div>
                 <Modal show={this.state.showWalletNotExist} onHide={this.handleCloseWalletNotExist} className='modal_content' style={{
                     position: 'absolute',
-                    // width: '700px',
                     left: '25%',
                     top: '150px',
-                    background: '#1B232A',
+                    background: '#FFFFFF',
                 }}>
                     <Modal.Header className='modal_new_will'>
                         <Button className='bnt_close' onClick={this.handleCloseWalletNotExist}>
@@ -708,41 +824,33 @@ class NewWill extends Component {
                                         I bequeath my
                                     </div>
                                     {
-                                        <Select styles={select} name="tokens" onChange={this.onChangeTokens} options={
-                                            this.getTokensLists().map((v) => {
-                                                return {
-                                                    value: v.address,
-                                                    label: v.symbol,
-                                                    icon: v.logoURI
-                                                }
-                                            })
-                                        }
-                                            components={{ Option: IconOption }} />
+                                        <Select
+                                            styles={select}
+                                            name="tokens"
+                                            onChange={this.onChangeTokens}
+                                            placeholder="Select token..."
+                                            options={this.getTokenOptions()}
+                                            components={{ Option: IconOption, SingleValue: IconSingleValue }}
+                                        />
                                     }
-                                    {/* <br></br> */}
-                                    {
-                                        this.state.tokensValue === ''
-                                            ?
-                                            null
-                                            :
-                                            <div className="your-wills__count">
-                                                <span>in the amount</span>
-                                                <div className="your-wills__checkbox">
-                                                    <input disabled={this.state.tokensValue === ''} id="unlimited" type="checkbox" onChange={this.onChangeUnlimitedAmount} checked={this.state.isUnlimitedAmount} className="form-check-input mt-0" />
-                                                    <label htmlFor="unlimited">{this.state.limitedText}</label><br />
-                                                </div>
-                                                <div style={{ display: this.state.isUnlimitedAmount === false ? 'block' : 'none' }} className="your-wills__max mt-0">
-                                                    <input disabled={this.disableAmountInput()} onChange={this.onChangeAmount} value={this.state.amount} min="0" placeholder="Enter the amount" type="number" className="input-group mb-3" />
-                                                    <Button variant="outline-success" disabled={this.disableAmountInput()} onClick={this.onSetMaxAmount}>
-                                                        All
-                                                    </Button>
-                                                </div>
-                                                <div className="your-wills__info-message"  data-title={tooltipText.tokens}>
-                                                    <img src={infoBtn} alt="Info"></img>
-                                                </div>
-                                            </div>
-                                    }
-
+                                </div>
+                            </div>
+                            <div className="modal-body__row">
+                                <div className="your-wills__count">
+                                    <span>Amount</span>
+                                    <div className="your-wills__checkbox">
+                                        <input id="unlimited" type="checkbox" onChange={this.onChangeUnlimitedAmount} checked={this.state.isUnlimitedAmount} className="form-check-input mt-0" />
+                                        <label htmlFor="unlimited">{this.state.limitedText}</label>
+                                    </div>
+                                    <div className="your-wills__info-message" data-title={tooltipText.tokens}>
+                                        <img src={infoBtn} alt="Info"></img>
+                                    </div>
+                                </div>
+                                <div style={{ opacity: this.state.isUnlimitedAmount ? 0.4 : 1, pointerEvents: this.state.isUnlimitedAmount ? 'none' : 'auto' }} className="your-wills__max mt-0">
+                                    <input disabled={this.state.isUnlimitedAmount || this.disableAmountInput()} onChange={this.onChangeAmount} value={this.state.isUnlimitedAmount ? '' : this.state.amount} min="0" placeholder={this.state.isUnlimitedAmount ? "All tokens" : "Enter the amount"} type="number" className="input-group mb-3" />
+                                    <Button variant="outline-success" disabled={this.state.isUnlimitedAmount || this.disableAmountInput()} onClick={this.onSetMaxAmount}>
+                                        All
+                                    </Button>
                                 </div>
                             </div>
                             <div className='modal-body__row modal-body__row-direction'>From the wallet <a href={`${this.props.networkProvider}/address/${this.state.signerAddress}`} target="_blank" rel="noreferrer" className='modal_wallet_link'>{this.state.signerAddress.slice(0, 6) + '...' + this.state.signerAddress.slice(this.state.signerAddress.length - 4, this.state.signerAddress.length)}</a>on the <i className="br"></i> {this.props.networkName} network
@@ -895,7 +1003,7 @@ class NewWill extends Component {
                                                                 (this.state.year === 0 && this.state.month === 0 && this.state.day === 0)
                                                                 ||
                                                                 (isNaN(parseInt(this.state.year)) || isNaN(parseInt(this.state.month)) || isNaN(parseInt(this.state.day)))
-                                                                ? '#3E474F' : '#5ED5A8'
+                                                                ? '#CBD5E1' : '#7fd3ab'
                                                     }
                                                 } >
                                             Approve
@@ -961,7 +1069,7 @@ class NewWill extends Component {
                                                                 (this.state.year === 0 && this.state.month === 0 && this.state.day === 0)
                                                                 ||
                                                                 (isNaN(parseInt(this.state.year)) || isNaN(parseInt(this.state.month)) || isNaN(parseInt(this.state.day)))
-                                                                ? '#3E474F' : '#5ED5A8'
+                                                                ? '#CBD5E1' : '#7fd3ab'
                                                     }}
                                             className='button_make-new-will'>
                                             <span className="button_number-span">Create a dWill</span>

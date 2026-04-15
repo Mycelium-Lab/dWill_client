@@ -2,7 +2,7 @@
 import { ethers } from "ethers";
 import { Component } from 'react';
 import axios from 'axios';
-import WalletConnectProvider from "@walletconnect/web3-provider";
+
 import { Provider } from 'ethcall';
 import './App.css';
 import PolygonPic from './content/poligon.svg'
@@ -364,31 +364,33 @@ class App extends Component {
     return (
       <div className="App">
         <canvas id="space"></canvas>
-        <header className="header _container">
-          <div className='header_boxes'>
-            <div className="header_boxes-col">
-              <div>
-                <img src={logo} alt="LOGO"/>
-              </div>
-              <div className="amount-will">
-                <div>
-                  Total bequeathed:
+        <header className="header">
+          <div className="_container">
+            <div className='header_boxes'>
+              <div className="header_boxes-col">
+                <div className="header-logo-wrap">
+                  <img className="header-logo" src={logo} alt="LOGO" />
                 </div>
-                <div>
-                  {this.state.total} USD
+                <div className="amount-will">
+                  <div>
+                    Total bequeathed:
+                  </div>
+                  <div>
+                    {this.state.total} USD
+                  </div>
                 </div>
               </div>
+
+              {
+                <Connect
+                  setProperties={this.setProperties}
+                  network={this.state.network}
+                  networkName={this.state.networkName}
+                  networkPic={this.state.networkPic}
+                />
+              }
+
             </div>
-
-            {
-              <Connect
-                setProperties={this.setProperties}
-                network={this.state.network}
-                networkName={this.state.networkName}
-                networkPic={this.state.networkPic}
-              />
-            }
-
           </div>
         </header>
 

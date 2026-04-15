@@ -1,117 +1,91 @@
 export const select = {
     control: (provided, state) => ({
         ...provided,
-        color: '#5ED5A8',
-        backgroundColor: '#161C22',
-        borderRadius: '10px',
-        borderColor: '#5ED5A8',
-        border: 'none',
+        color: '#334155',
+        backgroundColor: '#FCFCFC',
+        borderRadius: '16px',
+        border: '1px solid #E2E8F0',
+        boxShadow: 'none',
+        minHeight: '42px',
         "&:hover": {
-            border: "1px solid #5ED5A8",
-            boxShadow: "0px 0px 6px #5ED5A8"
+            borderColor: '#7fd3ab',
+            boxShadow: '0 0 0 4px rgba(127,211,171,0.15)'
         }
     }),
     dropdownIndicator: (provided, state) => ({
         ...provided,
-        color: '#5ED5A8',
-        backgroundColor: '#1D252C',
-        // border: 'none',
-        borderRadius: '0 10px 10px 0'
+        color: '#7fd3ab',
+        backgroundColor: '#F1F5F9',
+        borderRadius: '0 16px 16px 0'
     }),
     indicatorsContainer: (provided, state) => ({
         ...provided,
-        color: '#4285F4',
-        backgroundColor: '#161C22',
+        color: '#64748B',
+        backgroundColor: 'transparent',
         border: 'none',
-        borderRadius: '10px'
+        borderRadius: '16px'
     }),
     indicatorSeparator: (provided, state) => ({
         ...provided,
-        color: '#4285F4',
-        backgroundColor: '#161C22',
-        border: 'none',
-        borderRadius: '10px'
-        // fontSize: '18px'
+        backgroundColor: '#E2E8F0',
     }),
     input: (provided, state) => ({
         ...provided,
-        color: '#4285F4',
-        // backgroundColor: '#161C22',
+        color: '#334155',
         border: 'none',
-        borderRadius: '10px',
-        // fontSize: '18px'
     }),
     loadingIndicator: (provided, state) => ({
         ...provided,
-        color: '#4285F4',
-        backgroundColor: '#161C22',
-        border: 'none',
-        borderRadius: '10px'
-        // fontSize: '18px'
+        color: '#7fd3ab',
     }),
     loadingMessage: (provided, state) => ({
         ...provided,
-        color: '#4285F4',
-        backgroundColor: '#161C22',
-        border: 'none',
-        borderRadius: '10px'
-        // fontSize: '18px'
+        color: '#64748B',
+        backgroundColor: '#FFFFFF',
     }),
     menu: (provided, state) => ({
         ...provided,
-        color: '#4285F4',
-        backgroundColor: '#161C22',
-        border: 'none',
-        borderRadius: '10px',
-        zIndex: '999999999999999',
-
-        // fontSize: '18px'
+        color: '#334155',
+        backgroundColor: '#FFFFFF',
+        border: '1px solid #E2E8F0',
+        borderRadius: '16px',
+        zIndex: 999999,
+        boxShadow: '0 20px 60px rgba(15,23,42,0.08)',
+        overflow: 'hidden',
     }),
     menuList: (provided, state) => ({
         ...provided,
-        color: '#4285F4',
-        backgroundColor: '#161C22',
-        border: 'none',
-        borderRadius: '10px',
-        width: '100%',
-        // fontSize: '18px'
-        zIndex: '999999999999999',
-
+        color: '#334155',
+        backgroundColor: '#FFFFFF',
+        borderRadius: '16px',
+        padding: '4px',
     }),
     menuPortal: (provided, state) => ({
         ...provided,
-        color: '#4285F4',
-        backgroundColor: '#161C22',
-        border: 'none',
-        borderRadius: '10px'
-        // fontSize: '18px'
+        zIndex: 999999,
     }),
     noOptionsMessage: (provided, state) => ({
         ...provided,
-        color: '#4285F4',
-        backgroundColor: '#161C22',
-        border: 'none',
-        borderRadius: '10px'
-        // fontSize: '18px'
+        color: '#94A3B8',
+        backgroundColor: '#FFFFFF',
     }),
     option: (provided, state) => ({
         ...provided,
-        color: '#4285F4',
-        backgroundColor: '#161C22',
-        border: 'none',
-        borderRadius: '10px',
+        color: state.isSelected ? '#FFFFFF' : '#334155',
+        backgroundColor: state.isSelected ? '#7fd3ab' : state.isFocused ? '#F1F5F9' : '#FFFFFF',
+        borderRadius: '12px',
         display: 'flex',
         alignItems: 'center',
         gap: '10px',
-        // fontSize: '18px'
-        zIndex: '999999999999999',
+        cursor: 'pointer',
+        transition: 'all 0.15s ease',
     }),
     valueContainer: (provided, state) => ({
         ...provided,
-        color: '#4285F4',
+        color: '#334155',
     }),
     singleValue: (provided, state) => ({
         ...provided,
-        color: '#4285F4',
+        color: '#334155',
     }),
 }
