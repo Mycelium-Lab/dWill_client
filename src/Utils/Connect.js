@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import Modal from 'react-bootstrap/Modal';
-import PolygonPic from '../content/poligon.svg'
-import BinancePic from '../content/binance.svg'
-import BinancePic2 from '../content/image32.png'
-import EthereumPic from '../content/ethereum.svg'
-import AvalanchePic from '../content/avalanche.svg'
-import OptimismPic from '../content/optimism.svg'
-import ArbitrumPic from '../content/arbitrum.svg'
-import ArbitrumPic2 from '../content/image38.png'
-import btnMetamask from '../content/btn-metamask.svg'
-import btnWallet from '../content/btn-wallet.svg'
-import logoutPic from '../content/logout.svg'
-import chengeNetwork from '../content/chenge-network.svg'
 import { ethers } from "ethers";
 import { EthereumProvider } from "@walletconnect/ethereum-provider";
 import { chainIDs, chainRPCURL } from '../Utils/Constants.js'
+
+const PolygonPic = '/icons/poligon.webp'
+const BinancePic = '/icons/binance.webp'
+const BinancePic2 = '/icons/image32.webp'
+const EthereumPic = '/icons/ethereum.webp'
+const AvalanchePic = '/icons/avalanche.webp'
+const OptimismPic = '/icons/optimism.webp'
+const ArbitrumPic2 = '/icons/image38.webp'
+const btnMetamask = '/icons/btn-metamask.webp'
+const btnWallet = '/icons/btn-wallet.webp'
+const logoutPic = '/icons/logout.webp'
+const chengeNetwork = '/icons/chenge-network.webp'
 
 class Connect extends Component {
     constructor(props) {
@@ -148,6 +148,12 @@ class Connect extends Component {
                 ]
             })
             await provider.enable();
+            if (provider.chainId) {
+                const chainId = this.normalizeNetworkId(provider.chainId)
+                if (chainId !== null) {
+                    localStorage.setItem('wc_chain_id', String(chainId))
+                }
+            }
             const deepLink = window.localStorage.getItem(
                 'WALLETCONNECT_DEEPLINK_CHOICE'
               )
@@ -376,10 +382,12 @@ class Connect extends Component {
                 localStorage.removeItem('account')
                 localStorage.removeItem('wallet')
                 localStorage.removeItem('walletconnect')
+                localStorage.removeItem('wc_chain_id')
                 this.props.setProperties(null, null, null)
             } else {
                 localStorage.removeItem('account')
                 localStorage.removeItem('wallet')
+                localStorage.removeItem('wc_chain_id')
                 this.props.setProperties(null, null, null)
             }
         } catch (error) {
@@ -425,28 +433,69 @@ class Connect extends Component {
         )
     }
 
+    getWalletConnectNetworkId() {
+        if (localStorage.getItem('wallet') !== 'WalletConnect') {
+            return null
+        }
+        const chainIdFromStorage = this.normalizeNetworkId(localStorage.getItem('wc_chain_id'))
+        if (chainIdFromStorage !== null) {
+            return chainIdFromStorage
+        }
+        const walletConnectStorage = localStorage.getItem('walletconnect')
+        if (!walletConnectStorage) {
+            return null
+        }
+        try {
+            const match = JSON.stringify(JSON.parse(walletConnectStorage)).match(/eip155:(\d+)/)
+            if (!match || !match[1]) {
+                return null
+            }
+            const parsedId = Number(match[1])
+            return Number.isNaN(parsedId) ? null : parsedId
+        } catch (error) {
+            return null
+        }
+    }
+
+    normalizeNetworkId(id) {
+        if (typeof id === 'number') {
+            return id
+        }
+        if (typeof id === 'string') {
+            if (id.startsWith('0x')) {
+                const parsedHexId = Number.parseInt(id, 16)
+                return Number.isNaN(parsedHexId) ? null : parsedHexId
+            }
+            const parsedId = Number(id)
+            return Number.isNaN(parsedId) ? null : parsedId
+        }
+        return null
+    }
+
     renderNetwork(id) {
-        if (id !== null) {
-            if (id === chainIDs.Mumbai) {
+        const resolvedNetworkId = this.normalizeNetworkId(id) || this.getWalletConnectNetworkId()
+        if (resolvedNetworkId !== null) {
+            if (resolvedNetworkId === chainIDs.Mumbai) {
                 return this._renderNetwork(PolygonPic, 'Mumbai')
-            } else if (id === chainIDs.Goerli) {
+            } else if (resolvedNetworkId === chainIDs.Goerli) {
                 return this._renderNetwork(EthereumPic, 'Goerli')
-            } else if (id === chainIDs.BinanceTestnet) {
+            } else if (resolvedNetworkId === chainIDs.BinanceTestnet) {
                 return this._renderNetwork(BinancePic2, 'BNBTest Test')
-            } else if (id === chainIDs.Polygon) {
+            } else if (resolvedNetworkId === chainIDs.Polygon) {
                 return this._renderNetwork(PolygonPic, 'Polygon')
-            } else if (id === chainIDs.BinanceMainnet) {
+            } else if (resolvedNetworkId === chainIDs.BinanceMainnet) {
                 return this._renderNetwork(BinancePic, 'BNB')
-            } else if (id === chainIDs.EthereumMainnet) {
+            } else if (resolvedNetworkId === chainIDs.EthereumMainnet) {
                 return this._renderNetwork(EthereumPic, 'Ethereum')
-            } else if (id === chainIDs.AvalancheMainnet) {
+            } else if (resolvedNetworkId === chainIDs.AvalancheMainnet) {
                 return this._renderNetwork(AvalanchePic, 'Avalanche')
-            } else if (id === chainIDs.OptimismMainnet) {
+            } else if (resolvedNetworkId === chainIDs.OptimismMainnet) {
                 return this._renderNetwork(OptimismPic, 'Optimism')
-            } else if (id === chainIDs.ArbitrumMainnet) {
+            } else if (resolvedNetworkId === chainIDs.ArbitrumMainnet) {
                 return this._renderNetwork(ArbitrumPic2, 'Arbitrum')
             }
         }
+        return <span className="btn-header-connect__network-placeholder">(выберите сеть)</span>
     }
 
     renderNetwork = this.renderNetwork.bind(this)

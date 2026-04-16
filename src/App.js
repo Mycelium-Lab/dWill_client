@@ -5,25 +5,25 @@ import axios from 'axios';
 
 import { Provider } from 'ethcall';
 import './App.css';
-import PolygonPic from './content/poligon.svg'
-import BinancePic from './content/binance.svg'
-import EthereumPic from './content/ethereum.svg'
-import AvalanchePic from './content/avalanche.svg'
-import OptimismPic from './content/optimism.svg'
-import ArbitrumPic from './content/arbitrum.svg'
-import discordLogo from './content/DiscordLogo.svg'
-import twitterLogo from './content/TwitterLogo.svg'
-import telegramLogo from './content/TelegramLogo.svg'
-import documentLogo from './content/document.svg'
-import logo from './content/logo2-2.svg'
 import Connect from './Utils/Connect';
 import TheWill from './Contract/TheWill.json'
-import { chainIDs, chainRPCURL, NetworkProviders, TheWillAddresses, TokenAddresses } from './Utils/Constants';
+import { chainIDs, NetworkProviders, TheWillAddresses, TokenAddresses } from './Utils/Constants';
 import Data from './Data/Data';
 import Main from './Main/Main';
 
 import { renderStars } from "./Utils/stars";
 import { EthereumProvider } from "@walletconnect/ethereum-provider";
+
+const PolygonPic = '/icons/poligon.webp'
+const BinancePic = '/icons/binance.webp'
+const EthereumPic = '/icons/ethereum.webp'
+const AvalanchePic = '/icons/avalanche.webp'
+const OptimismPic = '/icons/optimism.webp'
+const ArbitrumPic = '/icons/arbitrum.webp'
+const twitterLogo = '/icons/TwitterLogo.webp'
+const telegramLogo = '/icons/TelegramLogo.webp'
+const documentLogo = '/icons/document.webp'
+const logo = '/icons/logo2-2.webp'
 
 window.mobileCheck = function() {
   let check = false;
@@ -64,6 +64,21 @@ const handleWalletConnectDeepLink = () => {
       console.log('TrustWallet force redirect err', err)
     }
   }
+}
+
+const normalizeChainId = (id) => {
+  if (typeof id === 'number') {
+    return id
+  }
+  if (typeof id === 'string') {
+    if (id.startsWith('0x')) {
+      const parsedHex = Number.parseInt(id, 16)
+      return Number.isNaN(parsedHex) ? null : parsedHex
+    }
+    const parsed = Number(id)
+    return Number.isNaN(parsed) ? null : parsed
+  }
+  return null
 }
 
 class App extends Component {
@@ -171,6 +186,10 @@ class App extends Component {
             ]
           })
           await provider.enable();
+          const initialWalletConnectChainId = normalizeChainId(provider.chainId)
+          if (initialWalletConnectChainId !== null) {
+            localStorage.setItem('wc_chain_id', String(initialWalletConnectChainId))
+          }
           handleWalletConnectDeepLink()
           const _provider = new ethers.providers.Web3Provider(provider)
           provider.on('accountsChanged', async (__accounts) => {
@@ -178,6 +197,7 @@ class App extends Component {
               localStorage.removeItem('account')
               localStorage.removeItem('wallet')
               localStorage.removeItem('walletconnect')
+              localStorage.removeItem('wc_chain_id')
               this.setState({
                 provider: null,
                 signer: null,
@@ -197,13 +217,18 @@ class App extends Component {
             localStorage.removeItem('account')
             localStorage.removeItem('wallet')
             localStorage.removeItem('walletconnect')
+            localStorage.removeItem('wc_chain_id')
             this.setState({
               provider: null,
               signer: null,
               signerAddress: null
             })
           })
-          provider.on('chainChanged', () => {
+          provider.on('chainChanged', (nextChainId) => {
+            const normalizedNextChainId = normalizeChainId(nextChainId)
+            if (normalizedNextChainId !== null) {
+              localStorage.setItem('wc_chain_id', String(normalizedNextChainId))
+            }
             window.location.reload()
           })
           const _signer = _provider.getSigner()
@@ -435,10 +460,10 @@ class App extends Component {
               {/* <a href="https://discord.gg/Sa5yvPhS9S" target="_blank" rel="noreferrer">
                 <img src={discordLogo} alt="Discord"></img>
               </a> */}
-              <a href="https://twitter.com/dWillApp" target="_blank" rel="noreferrer"> 
+              <a href="https://twitter.com/dWillApp" target="_blank" rel="noreferrer" className="footer__social-link footer__social-link--twitter"> 
                 <img src={twitterLogo} alt="Twitter"></img>
               </a>
-              <a href="https://t.me/+FYNh4fJq5UJjZDY0" target="_blank" rel="noreferrer">
+              <a href="https://t.me/+FYNh4fJq5UJjZDY0" target="_blank" rel="noreferrer" className="footer__social-link footer__social-link--telegram">
                 <img src={telegramLogo} alt="Telegram"></img>
               </a>
 

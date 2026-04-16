@@ -12,20 +12,20 @@ import { chainIDs } from '../Utils/Constants';
 import { createRightEditTime } from '../Utils/Time';
 import { tooltipText } from '../Utils/tooltipText';
 
-import editPic from '../content/edit.svg'
-import revokePic from '../content/revoke.svg'
-import closePic from '../content/button_close.svg'
-import PolygonPic from '../content/poligon.svg'
-import BinancePic from '../content/binance.svg'
-import EthereumPic from '../content/ethereum.svg'
-import AvalanchePic from '../content/avalanche.svg'
-import OptimismPic from '../content/optimism.svg'
-import ArbitrumPic from '../content/arbitrum.svg'
-import btnTelegram from '../content/btnTelegram.svg'
-import btnCalendar from '../content/btnCalendar.svg'
-import btnEmail from '../content/btnEmail.svg'
-import infoBtn from '../content/info-btn.svg'
-import linkBtn from '../content/link-btn.png'
+const editPic = '/icons/edit.webp'
+const revokePic = '/icons/revoke.webp'
+const closePic = '/icons/button_close.webp'
+const PolygonPic = '/icons/poligon.webp'
+const BinancePic = '/icons/binance.webp'
+const EthereumPic = '/icons/ethereum.webp'
+const AvalanchePic = '/icons/avalanche.webp'
+const OptimismPic = '/icons/optimism.webp'
+const ArbitrumPic = '/icons/arbitrum.webp'
+const btnTelegram = '/icons/btnTelegram.webp'
+const btnCalendar = '/icons/btnCalendar.webp'
+const btnEmail = '/icons/btnEmail.webp'
+const infoBtn = '/icons/info-btn.webp'
+const linkBtn = '/icons/link-btn.webp'
 
 class Wills extends Component {
     constructor(props) {

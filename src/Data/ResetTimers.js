@@ -6,9 +6,9 @@ import { Contract } from 'ethcall';
 
 import TheWill from '../Contract/TheWill.json'
 
-import closeModalPic from '../content/close_modal.svg'
-import closePic from '../content/button_close.svg'
-import linkBtn from '../content/link-btn.png'
+const closeModalPic = '/icons/close_modal.webp'
+const closePic = '/icons/button_close.webp'
+const linkBtn = '/icons/link-btn.webp'
 
 
 class ResetTimers extends Component {
