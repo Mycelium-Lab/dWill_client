@@ -5,6 +5,16 @@ import axios from 'axios';
 
 import { Provider } from 'ethcall';
 import './App.css';
+import PolygonPic from './content/poligon.svg'
+import BinancePic from './content/binance.svg'
+import EthereumPic from './content/ethereum.svg'
+import AvalanchePic from './content/avalanche.svg'
+import OptimismPic from './content/optimism.svg'
+import ArbitrumPic from './content/arbitrum.svg'
+import twitterLogo from './content/TwitterLogo.svg'
+import telegramLogo from './content/TelegramLogo.svg'
+import documentLogo from './content/document.svg'
+import logo from './content/logo2-2.svg'
 import Connect from './Utils/Connect';
 import TheWill from './Contract/TheWill.json'
 import { chainIDs, NetworkProviders, TheWillAddresses, TokenAddresses } from './Utils/Constants';
@@ -13,17 +23,6 @@ import Main from './Main/Main';
 
 import { renderStars } from "./Utils/stars";
 import { EthereumProvider } from "@walletconnect/ethereum-provider";
-
-const PolygonPic = '/icons/poligon.webp'
-const BinancePic = '/icons/binance.webp'
-const EthereumPic = '/icons/ethereum.webp'
-const AvalanchePic = '/icons/avalanche.webp'
-const OptimismPic = '/icons/optimism.webp'
-const ArbitrumPic = '/icons/arbitrum.webp'
-const twitterLogo = '/icons/TwitterLogo.webp'
-const telegramLogo = '/icons/TelegramLogo.webp'
-const documentLogo = '/icons/document.webp'
-const logo = '/icons/logo2-2.webp'
 
 window.mobileCheck = function() {
   let check = false;

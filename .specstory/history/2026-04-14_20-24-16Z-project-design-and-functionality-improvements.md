@@ -11084,3 +11084,733 @@ _**Agent (gpt-5.3-codex-xhigh)**_
 <summary>Tool use: **read_file_v2**</summary>
 
 </details></tool-use>
+
+_**Agent (gpt-5.3-codex-xhigh)**_
+
+<think><details><summary>Thought Process</summary>
+**Evaluating flex layout adjustments**
+
+I'm exploring how the margin top on a flex item affects the outer box. I think the alignment might include margins, but height properties might make the margin less noticeable. If there's a margin-top applied, it could be hidden due to the parent header's overflow property. We might need to adjust visibility using `transform: translateY(14px)` or `position: relative; top: 14px`. The main goal is to create a compressible header for mobile responsiveness and ensure adaptivity.
+**Inspecting header markup**
+
+I need to take a closer look at the markup for the header boxes, which has a left column and the Connect component on the right. When the account is connected, it uses the `.btn-header__main` class with text and icons. Currently, the header allows wrapping at max-width 767, but I think I should fix that by preventing wrap and reducing sizes further on smaller screens. Both sides need to fit in a single row, but that might be challenging with the large logo, amount, and wallet card. I can consider shrinking the left group and wallet card.
+**Optimizing header layout**
+
+I'm planning my approach to optimize the header layout. First, I'll set `.header_boxes` to `flex-wrap: nowrap` instead of wrap. I also want to adjust the gap to 8px and reduce the column gaps. Sizing might require me to make the logo width smaller, maybe around 84px, and the amount-will font tiny. I could consider hiding the first line too. For buttons, reducing padding, gap, and font size will help, and I might hide the "Chain" text on very small screens to save space.
+**Refining button styles**
+
+I’m considering using CSS to hide the trailing word "Chain" for better width management. I might apply a rule like `.btn-header-connect__footer > span > span:last-child` to control font size and handle overflow. If the width is tiny, I could hide the text completely. For the unconnected state of the #connect-button, I think I can shrink its min width. For connected states, I’ll ensure proper styling while addressing margin-top issues by removing forced min-height to avoid conflicts and using `align-self: center` with relative translations.
+**Enhancing mobile responsiveness**
+
+I’m reassessing the approach to ensure robust mobile adaptability. First, I might set heights to auto and adjust the margin for the amount-will element. To manage the margin-top user wants, I could use `!important` to force it, but maybe it's better to align it at the flex-start position. I'll implement breakpoints for specific widths to minimize overflow and ensure that components fit together snugly. For the smallest screens, I might consider reorienting the layout vertically, allowing for a more compact design. This should help avoid wrapping while keeping everything visible and organized.
+**Adapting header layout for mobile**
+
+I’m thinking it might be better to hide the "Total bequeathed:" label for screens under max-width 420, showing only the amount near the logo instead. I could use CSS to apply `display:none` for the label on tiny screens, which would help fit everything nicely. The logo would be about 62px wide, and the amount could have a compact font size. 
+
+I need to ensure the connected card and button widths are manageable, fitting everything within the limits. I'll set specific styles to allow for text truncation as needed. Let's patch the CSS accordingly to enhance mobile adaptation while keeping info accessible.</details></think>
+
+_**Agent (gpt-5.3-codex-xhigh)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: /Users/emilsataev/Downloads/dWill_client/src/App.css</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (gpt-5.3-codex-xhigh)**_
+
+<think><details><summary>Thought Process</summary>
+**Examining layout issues**
+
+I'm noticing that min-height and justify center might be conflicting with each other. I'll need to adjust those settings. It seems important to check how the layout looks on mobile as well, especially around line 1280 of the code. There’s definitely something to figure out here to ensure everything displays correctly across different devices! Let's dive into that adjustment and see if we can resolve the conflict.</details></think>
+
+_**Agent (gpt-5.3-codex-xhigh)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: /Users/emilsataev/Downloads/dWill_client/src/App.css</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (gpt-5.3-codex-xhigh)**_
+
+Сейчас внесу жёсткий CSS-фикс: уберу конфликт, который съедает `margin-top` у `.amount-will`, и добавлю отдельный ultra-small breakpoint (до 480px), где всё в хедере принудительно ужимается в один ряд без переносов.
+
+_**Agent (gpt-5.3-codex-xhigh)**_
+
+Failed to find context:
+.btn-header__main {
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (gpt-5.3-codex-xhigh)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: /Users/emilsataev/Downloads/dWill_client/src/App.css</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (gpt-5.3-codex-xhigh)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: /Users/emilsataev/Downloads/dWill_client/src/App.css</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (gpt-5.3-codex-xhigh)**_
+
+<think><details><summary>Thought Process</summary>
+**Adjusting height settings**
+
+I'm thinking of making some adjustments around the `btn-header__main` element, and I should add a `>div` and modify the wallet line height. I need to aim for a reading height between 1140 and 1175 to ensure everything fits perfectly within the context. It’s all about precise measurements, right? Let's make sure it all aligns nicely!</details></think>
+
+_**Agent (gpt-5.3-codex-xhigh)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: /Users/emilsataev/Downloads/dWill_client/src/App.css</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (gpt-5.3-codex-xhigh)**_
+
+<think><details><summary>Thought Process</summary>
+**Considering CSS modifications**
+
+I think I need to add some rules after `.btn-header__main`. My plan is to patch it by adding `.btn-header__main > div` and adjusting line-height for `.btn-header__wallet`. Also, I want to modify the media query for `.btn-header__main` to change the gap to 10. Let's apply these changes to see how it looks! I'm curious about how these tweaks will improve the layout.</details></think>
+
+_**Agent (gpt-5.3-codex-xhigh)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: /Users/emilsataev/Downloads/dWill_client/src/App.css</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (gpt-5.3-codex-xhigh)**_
+
+<think><details><summary>Thought Process</summary>
+**Appending media query**
+
+I need to add a new ultra-small media query at the end of my file, probably right before the existing end. I should check the lines near the file's bottom, around line 3700, to find the best spot to append it. There might already be final blocks for 768-1024 and max767 in there. I'll read the last 120 lines to ensure I’m placing it correctly without disrupting anything. Let's get that organized!</details></think>
+
+_**Agent (gpt-5.3-codex-xhigh)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: /Users/emilsataev/Downloads/dWill_client/src/App.css</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (gpt-5.3-codex-xhigh)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: /Users/emilsataev/Downloads/dWill_client/src/App.css</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (gpt-5.3-codex-xhigh)**_
+
+<think><details><summary>Thought Process</summary>
+**Checking CSS rules**
+
+I’m considering the mobile 767 rule, which currently uses the `.header-logo` with a width of 104 and the `.amount-will` set to white-space normal. I should check if the margin-top of `.amount-will` still applies on desktop at 14!important since the user wants that applied. For smaller screens, we can override it with `!important` to set it to 0. I'll need to verify everything with linters to ensure accuracy!</details></think>
+
+_**Agent (gpt-5.3-codex-xhigh)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="read_lints">
+<details>
+<summary>Tool use: **read_lints**</summary>
+
+
+Parameters:
+
+```json
+{
+  "paths": [
+    "/Users/emilsataev/Downloads/dWill_client/src/App.css"
+  ]
+}
+```
+Result:
+
+```json
+{
+  "linterErrorsByFile": [
+    {
+      "errors": [
+        {
+          "message": "Не используйте пустые наборы правил",
+          "range": {
+            "endPosition": {
+              "column": 18,
+              "line": 208
+            },
+            "startPosition": {
+              "column": 1,
+              "line": 208
+            }
+          },
+          "severity": "DIAGNOSTIC_SEVERITY_WARNING",
+          "source": "css"
+        },
+        {
+          "message": "Не используйте пустые наборы правил",
+          "range": {
+            "endPosition": {
+              "column": 20,
+              "line": 1069
+            },
+            "startPosition": {
+              "column": 1,
+              "line": 1069
+            }
+          },
+          "severity": "DIAGNOSTIC_SEVERITY_WARNING",
+          "source": "css"
+        },
+        {
+          "message": "Не используйте пустые наборы правил",
+          "range": {
+            "endPosition": {
+              "column": 24,
+              "line": 1134
+            },
+            "startPosition": {
+              "column": 1,
+              "line": 1134
+            }
+          },
+          "severity": "DIAGNOSTIC_SEVERITY_WARNING",
+          "source": "css"
+        },
+        {
+          "message": "Также определите стандартное свойство \"appearance\" для совместимости",
+          "range": {
+            "endPosition": {
+              "column": 21,
+              "line": 1437
+            },
+            "startPosition": {
+              "column": 3,
+              "line": 1437
+            }
+          },
+          "severity": "DIAGNOSTIC_SEVERITY_WARNING",
+          "source": "css"
+        },
+        {
+          "message": "Также определите стандартное свойство \"appearance\" для совместимости",
+          "range": {
+            "endPosition": {
+              "column": 18,
+              "line": 1438
+            },
+            "startPosition": {
+              "column": 3,
+              "line": 1438
+            }
+          },
+          "severity": "DIAGNOSTIC_SEVERITY_WARNING",
+          "source": "css"
+        },
+        {
+          "message": "Не используйте пустые наборы правил",
+          "range": {
+            "endPosition": {
+              "column": 22,
+              "line": 1713
+            },
+            "startPosition": {
+              "column": 1,
+              "line": 1713
+            }
+          },
+          "severity": "DIAGNOSTIC_SEVERITY_WARNING",
+          "source": "css"
+        },
+        {
+          "message": "Не используйте пустые наборы правил",
+          "range": {
+            "endPosition": {
+              "column": 32,
+              "line": 1881
+            },
+            "startPosition": {
+              "column": 1,
+              "line": 1881
+            }
+          },
+          "severity": "DIAGNOSTIC_SEVERITY_WARNING",
+          "source": "css"
+        },
+        {
+          "message": "Также определите стандартное свойство \"appearance\" для совместимости",
+          "range": {
+            "endPosition": {
+              "column": 18,
+              "line": 2369
+            },
+            "startPosition": {
+              "column": 3,
+              "line": 2369
+            }
+          },
+          "severity": "DIAGNOSTIC_SEVERITY_WARNING",
+          "source": "css"
+        },
+        {
+          "message": "Не используйте пустые наборы правил",
+          "range": {
+            "endPosition": {
+              "column": 16,
+              "line": 3386
+            },
+            "startPosition": {
+              "column": 1,
+              "line": 3386
+            }
+          },
+          "severity": "DIAGNOSTIC_SEVERITY_WARNING",
+          "source": "css"
+        },
+        {
+          "message": "Не используйте пустые наборы правил",
+          "range": {
+            "endPosition": {
+              "column": 21,
+              "line": 3608
+            },
+            "startPosition": {
+              "column": 1,
+              "line": 3608
+            }
+          },
+          "severity": "DIAGNOSTIC_SEVERITY_WARNING",
+          "source": "css"
+        },
+        {
+          "message": "Не используйте пустые наборы правил",
+          "range": {
+            "endPosition": {
+              "column": 39,
+              "line": 3612
+            },
+            "startPosition": {
+              "column": 1,
+              "line": 3612
+            }
+          },
+          "severity": "DIAGNOSTIC_SEVERITY_WARNING",
+          "source": "css"
+        }
+      ],
+      "relativeWorkspacePath": "/Users/emilsataev/Downloads/dWill_client/src/App.css"
+    }
+  ]
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="read_lints"><details>
+<summary>Tool use: **read_lints**</summary>
+
+</details></tool-use>
+
+_**Agent (gpt-5.3-codex-xhigh)**_
+
+<think><details><summary>Thought Process</summary>
+**Considering build process**
+
+I’m looking at the ReadLints warnings, which seem to be pre-existing and not from our changes—at least, there's no indication of errors. I think we need to build quickly. Doing a CI=false build could be heavy, but that might be okay. It may not be necessary to run each step, but I feel we should do it to be thorough. Overall, I'll focus on getting this build done efficiently.</details></think>
+
+_**Agent (gpt-5.3-codex-xhigh)**_
+
+Внес правки; сейчас быстро прогоню сборку, чтобы убедиться, что после этих адаптивных изменений ничего не отвалилось.
+
+_**Agent (gpt-5.3-codex-xhigh)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: CI=false npm run build</summary>
+
+```bash
+CI=false npm run build
+```
+
+```
+
+&gt; client@0.1.0 build
+&gt; react-app-rewired build
+
+Creating an optimized production build...
+Compiled with warnings.
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/environment/src/crypto.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/environment/src/crypto.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/environment/src/env.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/environment/src/env.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/environment/src/index.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/environment/src/index.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/events/src/events.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/events/src/events.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/events/src/index.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/events/src/index.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/jsonrpc-utils/src/constants.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/jsonrpc-utils/src/constants.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/jsonrpc-utils/src/env.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/jsonrpc-utils/src/env.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/jsonrpc-utils/src/error.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/jsonrpc-utils/src/error.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/jsonrpc-utils/src/format.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/jsonrpc-utils/src/format.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/jsonrpc-utils/src/index.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/jsonrpc-utils/src/index.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/jsonrpc-utils/src/routing.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/jsonrpc-utils/src/routing.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/jsonrpc-utils/src/types.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/jsonrpc-utils/src/types.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/jsonrpc-utils/src/url.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/jsonrpc-utils/src/url.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/jsonrpc-utils/src/validators.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/jsonrpc-utils/src/validators.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/relay-auth/src/api.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/relay-auth/src/api.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/relay-auth/src/constants.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/relay-auth/src/constants.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/relay-auth/src/index.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/relay-auth/src/index.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/relay-auth/src/types.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/relay-auth/src/types.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/relay-auth/src/utils.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/relay-auth/src/utils.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/safe-json/src/index.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/safe-json/src/index.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/time/src/constants/index.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/time/src/constants/index.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/time/src/constants/misc.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/time/src/constants/misc.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/time/src/constants/time.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/time/src/constants/time.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/time/src/index.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/time/src/index.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/time/src/types/index.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/time/src/types/index.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/time/src/types/watch.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/time/src/types/watch.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/time/src/utils/convert.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/time/src/utils/convert.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/time/src/utils/delay.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/time/src/utils/delay.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/time/src/utils/index.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/time/src/utils/index.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/time/src/watch.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/time/src/watch.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/window-getters/src/index.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/window-getters/src/index.ts'
+
+Failed to parse source map from '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/window-metadata/src/index.ts' file: Error: ENOENT: no such file or directory, open '/Users/emilsataev/Downloads/dWill_client/node_modules/@walletconnect/window-metadata/src/index.ts'
+
+[eslint] 
+src/App.js
+  Line 14:8:     'discordLogo' is defined but never used  no-unused-vars
+  Line 21:20:    'chainRPCURL' is defined but never used  no-unused-vars
+  Line 30:408:   Unnecessary escape character: \-         no-useless-escape
+  Line 30:489:   Unnecessary escape character: \-         no-useless-escape
+  Line 30:554:   Unnecessary escape character: \-         no-useless-escape
+  Line 30:581:   Unnecessary escape character: \-         no-useless-escape
+  Line 30:602:   Unnecessary escape character: \-         no-useless-escape
+  Line 30:640:   Unnecessary escape character: \-         no-useless-escape
+  Line 30:674:   Unnecessary escape character: \-         no-useless-escape
+  Line 30:743:   Unnecessary escape character: \-         no-useless-escape
+  Line 30:766:   Unnecessary escape character: \-         no-useless-escape
+  Line 30:771:   Unnecessary escape character: \-         no-useless-escape
+  Line 30:809:   Unnecessary escape character: \-         no-useless-escape
+  Line 30:822:   Unnecessary escape character: \-         no-useless-escape
+  Line 30:847:   Unnecessary escape character: \-         no-useless-escape
+  Line 30:856:   Unnecessary escape character: \-         no-useless-escape
+  Line 30:889:   Unnecessary escape character: \-         no-useless-escape
+  Line 30:913:   Unnecessary escape character: \-         no-useless-escape
+  Line 30:1017:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1061:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1082:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1124:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1177:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1274:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1359:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1394:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1423:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1429:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1451:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1460:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1534:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1541:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1556:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1580:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1592:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1600:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1650:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1654:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1707:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1713:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1728:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1732:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1754:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1766:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1827:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1885:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1932:  Unnecessary escape character: \-         no-useless-escape
+  Line 30:1948:  Unnecessary escape character: \-         no-useless-escape
+  Line 328:3:    Duplicate name 'setProperties'           no-dupe-class-members
+  Line 361:3:    Duplicate name 'loadBasic'               no-dupe-class-members
+  Line 399:66:   Expected '===' and instead saw '=='      eqeqeq
+
+src/Data/Inheritances.js
+  Line 350:5:  Duplicate name 'addTokenToWallet'             no-dupe-class-members
+  Line 352:5:  Duplicate name 'remainingTime'                no-dupe-class-members
+  Line 353:5:  Duplicate name 'checkIfTimeIsEnd'             no-dupe-class-members
+  Line 354:5:  Duplicate name 'claim'                        no-dupe-class-members
+  Line 368:5:  Duplicate name 'handleShowConfirm'            no-dupe-class-members
+  Line 369:5:  Duplicate name 'handleShowAwait'              no-dupe-class-members
+  Line 370:5:  Duplicate name 'handleCloseConfirm'           no-dupe-class-members
+  Line 371:5:  Duplicate name 'handleCloseAwait'             no-dupe-class-members
+  Line 384:5:  Duplicate name 'handleShowEventConfirmed'     no-dupe-class-members
+  Line 385:5:  Duplicate name 'handleCloseEventConfirmed'    no-dupe-class-members
+  Line 403:5:  Duplicate name 'handleShowReceiveConfirmed'   no-dupe-class-members
+  Line 404:5:  Duplicate name 'handleCloseReceiveConfirmed'  no-dupe-class-members
+  Line 417:5:  Duplicate name 'handleShowError'              no-dupe-class-members
+  Line 418:5:  Duplicate name 'handleCloseError'             no-dupe-class-members
+
+src/Data/ResetTimers.js
+  Line 118:5:  Duplicate name 'resetTimers'                no-dupe-class-members
+  Line 123:5:  Duplicate name 'handleClose'                no-dupe-class-members
+  Line 124:5:  Duplicate name 'handleShow'                 no-dupe-class-members
+  Line 138:5:  Duplicate name 'handleShowConfirm'          no-dupe-class-members
+  Line 139:5:  Duplicate name 'handleShowAwait'            no-dupe-class-members
+  Line 140:5:  Duplicate name 'handleCloseConfirm'         no-dupe-class-members
+  Line 141:5:  Duplicate name 'handleCloseAwait'           no-dupe-class-members
+  Line 154:5:  Duplicate name 'handleShowEventConfirmed'   no-dupe-class-members
+  Line 155:5:  Duplicate name 'handleCloseEventConfirmed'  no-dupe-class-members
+  Line 168:5:  Duplicate name 'handleShowError'            no-dupe-class-members
+  Line 169:5:  Duplicate name 'handleCloseError'           no-dupe-class-members
+
+src/Data/Wills.js
+  Line 324:55:    Unexpected string concatenation of literals                                                                no-useless-concat
+  Line 324:61:    Unexpected string concatenation of literals                                                                no-useless-concat
+  Line 324:101:   Unexpected string concatenation of literals                                                                no-useless-concat
+  Line 771:5:     Duplicate name 'onSetMaxAmount'                                                                            no-dupe-class-members
+  Line 773:5:     Duplicate name 'approve'                                                                                   no-dupe-class-members
+  Line 774:5:     Duplicate name 'changeApproved'                                                                            no-dupe-class-members
+  Line 775:5:     Duplicate name 'onChangeAmount'                                                                            no-dupe-class-members
+  Line 776:5:     Duplicate name 'onChangeTime'                                                                              no-dupe-class-members
+  Line 777:5:     Duplicate name 'cancelWill'                                                                                no-dupe-class-members
+  Line 778:5:     Duplicate name 'edit'                                                                                      no-dupe-class-members
+  Line 779:5:     Duplicate name 'onChangeYear'                                                                              no-dupe-class-members
+  Line 780:5:     Duplicate name 'onChangeMonth'                                                                             no-dupe-class-members
+  Line 781:5:     Duplicate name 'onChangeDay'                                                                               no-dupe-class-members
+  Line 782:5:     Duplicate name 'onChangeHeirAddress'                                                                       no-dupe-class-members
+  Line 856:5:     Duplicate name 'checkIfNotChanged'                                                                         no-dupe-class-members
+  Line 914:5:     Duplicate name 'changeNotifications'                                                                       no-dupe-class-members
+  Line 915:5:     Duplicate name 'changeDelivery'                                                                            no-dupe-class-members
+  Line 916:5:     Duplicate name 'changeMessage'                                                                             no-dupe-class-members
+  Line 917:5:     Duplicate name 'onChangeUnlimitedAmount'                                                                   no-dupe-class-members
+  Line 919:5:     Duplicate name 'handleCloseEdit'                                                                           no-dupe-class-members
+  Line 920:5:     Duplicate name 'handleShowEdit'                                                                            no-dupe-class-members
+  Line 934:5:     Duplicate name 'handleShowConfirm'                                                                         no-dupe-class-members
+  Line 935:5:     Duplicate name 'handleShowAwait'                                                                           no-dupe-class-members
+  Line 936:5:     Duplicate name 'handleCloseConfirm'                                                                        no-dupe-class-members
+  Line 937:5:     Duplicate name 'handleCloseAwait'                                                                          no-dupe-class-members
+  Line 939:5:     Duplicate name 'timeConverter'                                                                             no-dupe-class-members
+  Line 940:5:     Duplicate name 'remainingTime'                                                                             no-dupe-class-members
+  Line 953:5:     Duplicate name 'handleShowError'                                                                           no-dupe-class-members
+  Line 954:5:     Duplicate name 'handleCloseError'                                                                          no-dupe-class-members
+  Line 967:5:     Duplicate name 'handleShowEventConfirmed'                                                                  no-dupe-class-members
+  Line 968:5:     Duplicate name 'handleCloseEventConfirmed'                                                                 no-dupe-class-members
+  Line 1174:654:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
+
+src/Main/Main.js
+  Line 27:5:   Duplicate name 'disconnect'          no-dupe-class-members
+  Line 38:52:  Expected '===' and instead saw '=='  eqeqeq
+  Line 53:49:  Expected '===' and instead saw '=='  eqeqeq
+
+src/Main/NewWill.js
+  Line 131:1:    Date prototype is read only, properties should not be added                                                no-extend-native
+  Line 685:5:    Duplicate name 'onChangeUnlimitedAmount'                                                                   no-dupe-class-members
+  Line 686:5:    Duplicate name 'onSetMaxAmount'                                                                            no-dupe-class-members
+  Line 687:5:    Duplicate name 'approve'                                                                                   no-dupe-class-members
+  Line 688:5:    Duplicate name 'newWill'                                                                                   no-dupe-class-members
+  Line 689:5:    Duplicate name 'onChangeTokens'                                                                            no-dupe-class-members
+  Line 690:5:    Duplicate name 'onChangeAmount'                                                                            no-dupe-class-members
+  Line 691:5:    Duplicate name 'changeApproved'                                                                            no-dupe-class-members
+  Line 692:5:    Duplicate name 'onChangeYear'                                                                              no-dupe-class-members
+  Line 693:5:    Duplicate name 'onChangeMonth'                                                                             no-dupe-class-members
+  Line 694:5:    Duplicate name 'onChangeDay'                                                                               no-dupe-class-members
+  Line 695:5:    Duplicate name 'onChangeHeirAddress'                                                                       no-dupe-class-members
+  Line 696:5:    Duplicate name 'changeNotifications'                                                                       no-dupe-class-members
+  Line 697:5:    Duplicate name 'changeDelivery'                                                                            no-dupe-class-members
+  Line 698:5:    Duplicate name 'changeMessage'                                                                             no-dupe-class-members
+  Line 719:5:    Duplicate name 'handleClose'                                                                               no-dupe-class-members
+  Line 720:5:    Duplicate name 'handleShow'                                                                                no-dupe-class-members
+  Line 734:5:    Duplicate name 'handleShowConfirm'                                                                         no-dupe-class-members
+  Line 735:5:    Duplicate name 'handleShowAwait'                                                                           no-dupe-class-members
+  Line 736:5:    Duplicate name 'handleCloseConfirm'                                                                        no-dupe-class-members
+  Line 737:5:    Duplicate name 'handleCloseAwait'                                                                          no-dupe-class-members
+  Line 750:5:    Duplicate name 'handleShowError'                                                                           no-dupe-class-members
+  Line 751:5:    Duplicate name 'handleCloseError'                                                                          no-dupe-class-members
+  Line 756:5:    Duplicate name 'handleShowWalletNotExist'                                                                  no-dupe-class-members
+  Line 757:5:    Duplicate name 'handleCloseWalletNotExist'                                                                 no-dupe-class-members
+  Line 762:5:    Duplicate name 'handleShowDoneNewWill'                                                                     no-dupe-class-members
+  Line 763:5:    Duplicate name 'handleCloseDoneNewWill'                                                                    no-dupe-class-members
+  Line 776:5:    Duplicate name 'handleShowEventConfirmed'                                                                  no-dupe-class-members
+  Line 777:5:    Duplicate name 'handleCloseEventConfirmed'                                                                 no-dupe-class-members
+  Line 941:654:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
+  Line 1012:45:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
+
+src/Utils/Connect.js
+  Line 9:8:     'ArbitrumPic' is defined but never used                                                                    no-unused-vars
+  Line 390:5:   Duplicate name 'logout'                                                                                    no-dupe-class-members
+  Line 392:5:   Duplicate name 'walletConnect'                                                                             no-dupe-class-members
+  Line 393:5:   Duplicate name 'changeNetwork'                                                                             no-dupe-class-members
+  Line 405:5:   Duplicate name 'showWalletsModal'                                                                          no-dupe-class-members
+  Line 406:5:   Duplicate name 'closeWalletsModal'                                                                         no-dupe-class-members
+  Line 408:5:   Duplicate name 'showNetworksModal'                                                                         no-dupe-class-members
+  Line 409:5:   Duplicate name 'closeNetworksModal'                                                                        no-dupe-class-members
+  Line 414:5:   Duplicate name 'showLogoutBtn'                                                                             no-dupe-class-members
+  Line 415:5:   Duplicate name 'closeLogoutBtn'                                                                            no-dupe-class-members
+  Line 452:5:   Duplicate name 'renderNetwork'                                                                             no-dupe-class-members
+  Line 475:82:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
+  Line 479:86:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
+  Line 480:82:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
+  Line 519:41:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+File sizes after gzip:
+
+  492.77 kB          build/static/js/main.5c6e6a72.js
+  46.39 kB           build/static/js/459.17578af9.chunk.js
+  11.31 kB (+269 B)  build/static/css/main.bab910ee.css
+  5.53 kB            build/static/js/774.f6005723.chunk.js
+  2.7 kB             build/static/js/496.17afe362.chunk.js
+
+The project was built assuming it is hosted at /.
+You can control this with the homepage field in your package.json.
+
+The build folder is ready to be deployed.
+You may serve it with a static server:
+
+  npm install -g serve
+  serve -s build
+
+Find out more about deployment here:
+
+  https://cra.link/deployment
+
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (gpt-5.3-codex-xhigh)**_
+
+<think><details><summary>Thought Process</summary>
+**Finalizing concise response**
+
+I need to ensure the final response is concise while acknowledging the changes made. There was a margin-top issue conflict, now resolved with `!important`. I've dealt with tiny mobile compression, avoiding a second row using `nowrap` and shrinking. I might provide path references in backticks but no line numbers. If issues persist, it could be due to cache; a hard refresh is advised. Including code block citations might not be necessary, though.
+**Finalizing response**
+
+I've discovered that the margin-top appeared ignored due to the min-height and vertical centering in `.amount-will` and `.header-logo-wrap`, which hindered the visible shift. I've fixed this by using `align-self: flex-start` and setting `margin-top: 14px !important`. For screens 480px or smaller, I've added aggressive responsive rules, adjusting container padding, logo sizes, font sizes, connect button size, wallet card width, and icons to 16px. I've also prevented header wrapping with `flex-wrap: nowrap` at 767px or below. Finally, I’ll check behavior on 320/360/390 widths and consider hiding network text on <=360px if needed.</details></think>
+
+_**Agent (gpt-5.3-codex-xhigh)**_
+
+Нашёл и исправил обе проблемы в `src/App.css`.
+
+- **Почему `margin-top: 14px` у `.amount-will` “не работал”**
+  - блок был зажат предыдущими правилами (`min-height` + вертикальное центрирование), визуально смещение почти не читалось.
+  - теперь сделал так, чтобы смещение реально применялось:
+    - `margin-top: 14px !important;`
+    - `align-self: flex-start;`
+    - убрал фиксированные `min-height` в этом блоке.
+
+- **Хедер на самых маленьких экранах**
+  - добавил жёсткую адаптацию для `@media (max-width: 480px)`, чтобы элементы не падали на вторую строку:
+    - `header_boxes` -> `flex-wrap: nowrap`
+    - сильно уменьшены размеры лого, кнопки, адресного блока
+    - ограничена ширина/текст кошелька с `ellipsis`
+    - ужаты иконки смены сети/выхода
+    - уменьшены горизонтальные паддинги контейнера.
+
+- **Дополнительно**
+  - на `<=767px` тоже убрал перенос в хедере (`nowrap`), чтобы не было “перелома” строки.
+
+Проверил сборкой: `CI=false npm run build` — успешно.
+
+Если после этого на конкретной ширине (например 320px) всё ещё переносит, добью точечно: могу скрыть слово `Chain` на `<=360px` и оставить только иконку сети + название сети в коротком виде.

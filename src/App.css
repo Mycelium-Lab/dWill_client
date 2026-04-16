@@ -970,7 +970,7 @@ a {
 
 
 .will-date__row--checkbox input:checked+label::before {
-  background-image: url('../public/icons/check.webp');
+  background-image: url('./content/check.svg');
 }
 
 .will-date__row label {
@@ -2996,7 +2996,7 @@ ul.your-wills__footer {
   user-select: none;
 } */
 .checkbox_unlited+label::before {
-  content: url('../public/icons/button-unlited.webp');
+  content: url(./content/button-unlited.svg);
   display: inline-block;
   width: 1em;
   height: 1em;
@@ -3522,14 +3522,17 @@ footer a {
 }
 
 .footer__social-link--twitter img,
-.footer__social-link--telegram img {
+.footer__social-link--telegram img,
+.footer__social-document img {
   transition: filter 0.18s ease;
 }
 
 .footer__social-link--twitter:hover img,
 .footer__social-link--twitter:active img,
 .footer__social-link--telegram:hover img,
-.footer__social-link--telegram:active img {
+.footer__social-link--telegram:active img,
+.footer__social-document:hover img,
+.footer__social-document:active img {
   filter: brightness(0.82);
 }
 

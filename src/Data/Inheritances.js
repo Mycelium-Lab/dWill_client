@@ -8,13 +8,12 @@ import { chainIDs } from '../Utils/Constants'
 import { tooltipText } from '../Utils/tooltipText'
 import TheWill from '../Contract/TheWill.json'
 import ERC20 from '../Contract/ERC20.json'
-
-const closePic = '/icons/button_close.webp'
-const closeModalPic = '/icons/close_modal.webp'
-const receivePic = '/icons/receive.webp'
-const ConfiPic = '/icons/confi.webp'
-const linkBtn = '/icons/link-btn.webp'
-const infoBtn = '/icons/info-btn.webp'
+import closePic from '../content/button_close.svg'
+import closeModalPic from '../content/close_modal.svg'
+import receivePic from '../content/receive.svg'
+import ConfiPic from '../content/confi.svg'
+import linkBtn from '../content/link-btn.png'
+import infoBtn from '../content/info-btn.svg'
 
 class Inheritances extends Component {
     constructor(props) {

@@ -1,20 +1,19 @@
 import React, { Component } from 'react';
 import Modal from 'react-bootstrap/Modal';
+import PolygonPic from '../content/poligon.svg'
+import BinancePic from '../content/binance.svg'
+import BinancePic2 from '../content/image32.png'
+import EthereumPic from '../content/ethereum.svg'
+import AvalanchePic from '../content/avalanche.svg'
+import OptimismPic from '../content/optimism.svg'
+import ArbitrumPic2 from '../content/image38.png'
+import btnMetamask from '../content/btn-metamask.svg'
+import btnWallet from '../content/btn-wallet.svg'
+import logoutPic from '../content/logout.svg'
+import chengeNetwork from '../content/chenge-network.svg'
 import { ethers } from "ethers";
 import { EthereumProvider } from "@walletconnect/ethereum-provider";
 import { chainIDs, chainRPCURL } from '../Utils/Constants.js'
-
-const PolygonPic = '/icons/poligon.webp'
-const BinancePic = '/icons/binance.webp'
-const BinancePic2 = '/icons/image32.webp'
-const EthereumPic = '/icons/ethereum.webp'
-const AvalanchePic = '/icons/avalanche.webp'
-const OptimismPic = '/icons/optimism.webp'
-const ArbitrumPic2 = '/icons/image38.webp'
-const btnMetamask = '/icons/btn-metamask.webp'
-const btnWallet = '/icons/btn-wallet.webp'
-const logoutPic = '/icons/logout.webp'
-const chengeNetwork = '/icons/chenge-network.webp'
 
 class Connect extends Component {
     constructor(props) {

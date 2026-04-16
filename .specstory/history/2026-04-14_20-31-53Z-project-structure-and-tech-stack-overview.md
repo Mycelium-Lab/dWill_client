@@ -728,3 +728,274 @@ Directory: **/Users/emilsataev/Downloads/dWill_client/build** (0 files)
 <summary>Tool use: **glob_file_search**</summary>
 
 </details></tool-use>
+
+_**Agent (composer-2-fast)**_
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search">
+<details>
+<summary>Tool use: **glob_file_search** • Searched codebase "" • **19** results in **1** directory</summary>
+
+Directory: **/Users/emilsataev/Downloads/dWill_client/build/static** (19 files)
+
+| File |
+|------|
+| `media/confi.ff61179b.svg` |
+| `media/TelegramLogo.0f3c6153.svg` |
+| `media/TwitterLogo.c78ed44a.svg` |
+| `media/check.58ce8d05.svg` |
+| `media/chenge-network.d76e9bd3.svg` |
+| `media/revoke.a86df928.svg` |
+| `media/close_modal.1411aab3.svg` |
+| `media/edit.1e3f39c5.svg` |
+| `media/avalanche.c302af6f.svg` |
+| `media/DiscordLogo.bcfe831d.svg` |
+| `js/2.aa2c70dd.chunk.js.LICENSE.txt` |
+| `media/btnCalendar.a0200773.svg` |
+| `media/button_close.1411aab3.svg` |
+| `media/optimism.78755a62.svg` |
+| `media/receive.a9ffaec5.svg` |
+| `media/button-unlited.764e965f.svg` |
+| `media/info-btn.85657d0e.svg` |
+| `media/logout.94619f09.svg` |
+| `media/btnTelegram.c15a7c58.svg` |
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search"><details>
+<summary>Tool use: **glob_file_search**</summary>
+
+</details></tool-use>
+
+_**Agent (composer-2-fast)**_
+
+<think><details><summary>Thought Process</summary>
+The build appears incomplete, showing only the LICENSE file in the js folder without any actual code chunks.</details></think>
+
+_**Agent (composer-2-fast)**_
+
+Here is a concise report of the project based on read-only exploration of `/Users/emilsataev/Downloads/dWill_client`.
+
+---
+
+## 1. Full directory tree
+
+```
+/Users/emilsataev/Downloads/dWill_client/
+├── .gitignore
+├── .specstory/
+│   ├── .project.json
+│   └── cli/
+│       └── config.toml
+├── README.md
+├── package.json
+├── package-lock.json
+├── config-overrides.js
+├── server.js
+├── public/
+│   ├── _redirects
+│   ├── index.html
+│   ├── manifest.json
+│   ├── robots.txt
+│   └── window_log.svg
+├── src/
+│   ├── App.js
+│   ├── App.css
+│   ├── App.test.js
+│   ├── index.js
+│   ├── index.css
+│   ├── reportWebVitals.js
+│   ├── setupTests.js
+│   ├── Contract/
+│   │   ├── TheWill.json
+│   │   └── ERC20.json
+│   ├── content/
+│   │   ├── arrow-down.svg
+│   │   ├── avalanche.svg
+│   │   ├── btnCalendar.svg
+│   │   ├── btnTelegram.svg
+│   │   ├── button_close.svg
+│   │   ├── button-m.svg
+│   │   ├── button-unlited.svg
+│   │   ├── check.svg
+│   │   ├── chenge-network.svg
+│   │   ├── close_modal.svg
+│   │   ├── confi.svg
+│   │   ├── desktop.ini
+│   │   ├── DiscordLogo.svg
+│   │   ├── edit.svg
+│   │   ├── info-btn.svg
+│   │   ├── loading.svg
+│   │   ├── logo.svg
+│   │   ├── logout.svg
+│   │   ├── optimism.svg
+│   │   ├── question.svg
+│   │   ├── receive.svg
+│   │   ├── revoke.svg
+│   │   ├── TelegramLogo.svg
+│   │   ├── TwitterLogo.svg
+│   │   ├── wallet.svg
+│   │   └── window_log.svg
+│   ├── Data/
+│   │   ├── Data.js
+│   │   ├── Inheritances.js
+│   │   ├── ResetTimers.js
+│   │   └── Wills.js
+│   ├── fonts/
+│   │   └── stylesheet.css
+│   ├── Main/
+│   │   ├── Main.js
+│   │   └── NewWill.js
+│   └── Utils/
+│       ├── Connect.js
+│       ├── Constants.js
+│       ├── stars.js
+│       ├── styles/
+│       │   └── select.js
+│       ├── Time.js
+│       ├── tooltipText.js
+│       └── tokens/
+│           ├── avalanche.json
+│           ├── binanceMainnet.json
+│           ├── binanceTestnet.json
+│           ├── goerli.json
+│           ├── mumbai.json
+│           ├── optimism.json
+│           └── uniswap.json
+└── build/                          # production build (partial listing from workspace)
+    ├── _redirects
+    ├── asset-manifest.json
+    ├── index.html
+    ├── manifest.json
+    ├── robots.txt
+    ├── window_log.svg
+    └── static/
+        ├── js/
+        │   └── 2.aa2c70dd.chunk.js.LICENSE.txt
+        └── media/
+            ├── avalanche.c302af6f.svg
+            ├── btnCalendar.a0200773.svg
+            ├── btnTelegram.c15a7c58.svg
+            ├── button_close.1411aab3.svg
+            ├── button-unlited.764e965f.svg
+            ├── check.58ce8d05.svg
+            ├── chenge-network.d76e9bd3.svg
+            ├── close_modal.1411aab3.svg
+            ├── confi.ff61179b.svg
+            ├── DiscordLogo.bcfe831d.svg
+            ├── edit.1e3f39c5.svg
+            ├── info-btn.85657d0e.svg
+            ├── logout.94619f09.svg
+            ├── optimism.78755a62.svg
+            ├── receive.a9ffaec5.svg
+            ├── revoke.a86df928.svg
+            ├── TelegramLogo.0f3c6153.svg
+            └── TwitterLogo.c78ed44a.svg
+```
+
+**Note:** `index.html` references assets such as `./favicon2.svg`, `./fonts/stylesheet.css`, and OG images under `public/`, but those paths are not present in the indexed `public/` listing—only the five files above are. Source code also imports several assets under `src/content/` (e.g. `poligon.svg`, `binance.svg`, `ethereum.svg`, `arbitrum.svg`, `logo2-2.svg`, `document.svg`, `btn-metamask.svg`, `btnEmail.svg`, `link-btn.png`, etc.) that do **not** appear in the current `src/content/` folder listing. That usually means an incomplete copy of the repo or missing binary assets; the app may not build until those files exist.
+
+---
+
+## 2. `package.json` contents
+
+The project is named `client` at version `0.1.0`, private, with scripts:
+
+- `start` / `build` / `test`: `react-app-rewired` (wrapping `react-scripts` 5.0.1)
+
+**Runtime dependencies (summary):** React 18, `react-router-dom`, `react-bootstrap`, `react-select`, `ethers` v5, `ethcall`, WalletConnect packages, `axios`, `express`, `body-parser`, testing libs, `web-vitals`.
+
+**Dev dependencies:** `react-app-rewired`, polyfills (`buffer`, `crypto-browserify`, `stream-browserify`, etc.), Babel plugin for private fields.
+
+Full file path: `/Users/emilsataev/Downloads/dWill_client/package.json`.
+
+---
+
+## 3. Main entry and “routing”
+
+**Entry:** `/Users/emilsataev/Downloads/dWill_client/src/index.js`  
+- Creates the React 18 root, imports global CSS (`index.css`, `fonts/stylesheet.css`), renders `<App />`, calls `reportWebVitals()`.
+
+**No client-side URL routing is implemented** in `App.js` or elsewhere under `src/`. `react-router-dom` is listed in `package.json` but there are no `BrowserRouter` / `Routes` / `Route` imports in application code (only `express.Router` in `server.js`).
+
+**UI structure:** `/Users/emilsataev/Downloads/dWill_client/src/App.js` is a large class component that:
+
+- Handles MetaMask and WalletConnect, network detection, contract setup (`TheWill`), and loads “total bequeathed” from a Google Sheet via `axios`.
+- Renders header (logo, total USD, `<Connect />`), then **either**:
+  - `/Users/emilsataev/Downloads/dWill_client/src/Main/Main.js` when `signer` is null **or** `willsLength == 0`, **or**
+  - `/Users/emilsataev/Downloads/dWill_client/src/Data/Data.js` when the user has a signer and at least one will.
+
+So “routing” is **conditional rendering**, not React Router.
+
+**SSR / static server:** `/Users/emilsataev/Downloads/dWill_client/server.js` serves `build/` at `/` and references a `buildV1` path for `/v1` (that folder is not in the tree returned by search).
+
+---
+
+## 4. Component / screen files and purposes
+
+All are class-based React components unless noted.
+
+| Path | Role |
+|------|------|
+| `/Users/emilsataev/Downloads/dWill_client/src/App.js` | Root shell: wallet, chain, contract state, header/footer, switches between `Main` and `Data`. |
+| `/Users/emilsataev/Downloads/dWill_client/src/Main/Main.js` | Intro copy; shows `Connect` or `NewWill`; may show `Inheritances` when user has inheritances. |
+| `/Users/emilsataev/Downloads/dWill_client/src/Main/NewWill.js` | Large form/modals to create a dWill (tokens, heir, timers, approvals, `react-select`, Bootstrap modals). |
+| `/Users/emilsataev/Downloads/dWill_client/src/Data/Data.js` | Signed-in dashboard: composes `ResetTimers`, `Inheritances`, `Wills`, and `NewWill`. |
+| `/Users/emilsataev/Downloads/dWill_client/src/Data/Wills.js` | Lists and manages user-created wills (edit heir/time, revoke, etc.). |
+| `/Users/emilsataev/Downloads/dWill_client/src/Data/Inheritances.js` | Heir view: dWills assigned to the connected wallet; receive flow. |
+| `/Users/emilsataev/Downloads/dWill_client/src/Data/ResetTimers.js` | UI to reset inactivity timers on the contract. |
+| `/Users/emilsataev/Downloads/dWill_client/src/Utils/Connect.js` | Wallet picker and network switching (MetaMask / WalletConnect, modals). |
+
+**Supporting modules (not page components):**
+
+| Path | Role |
+|------|------|
+| `/Users/emilsataev/Downloads/dWill_client/src/Utils/Constants.js` | Chain IDs, RPC URLs, contract/token addresses, explorers. |
+| `/Users/emilsataev/Downloads/dWill_client/src/Utils/Time.js` | Helpers for editing time fields in will UI. |
+| `/Users/emilsataev/Downloads/dWill_client/src/Utils/tooltipText.js` | Long-form tooltip copy strings. |
+| `/Users/emilsataev/Downloads/dWill_client/src/Utils/stars.js` | Animated starfield on `<canvas id="space">`. |
+| `/Users/emilsataev/Downloads/dWill_client/src/Utils/styles/select.js` | `react-select` theme-style object for dark/green UI. |
+
+**Tests / CRA boilerplate:**  
+`/Users/emilsataev/Downloads/dWill_client/src/App.test.js`, `/Users/emilsataev/Downloads/dWill_client/src/setupTests.js`, `/Users/emilsataev/Downloads/dWill_client/src/reportWebVitals.js`
+
+**Backend helper:**  
+`/Users/emilsataev/Downloads/dWill_client/server.js` — Express static file server for production build.
+
+---
+
+## 5. Styling approach
+
+- **Global CSS:** `/Users/emilsataev/Downloads/dWill_client/src/index.css` and `/Users/emilsataev/Downloads/dWill_client/src/App.css` (BEM-like class names: `_container`, `header_boxes`, `footer__wrapper`, etc.).
+- **Fonts:** `/Users/emilsataev/Downloads/dWill_client/src/fonts/stylesheet.css` imported from `index.js`.
+- **react-bootstrap:** `Button`, `Modal` (and related patterns) in multiple components.
+- **react-select:** With custom styles from `/Users/emilsataev/Downloads/dWill_client/src/Utils/styles/select.js`.
+- **Not used:** No Tailwind, no `styled-components`, no CSS Modules found (no `*.module.css` in search).
+
+Bootstrap CDN in `public/index.html` is commented out; styling relies on local CSS + Bootstrap components’ default/CSS from the library bundle.
+
+---
+
+## 6. Config files
+
+| File | Purpose |
+|------|---------|
+| `/Users/emilsataev/Downloads/dWill_client/config-overrides.js` | `react-app-rewired` webpack overrides: Node polyfills (`crypto`, `stream`, `buffer`, etc.) for browser bundles. |
+| `/Users/emilsataev/Downloads/dWill_client/package.json` | Scripts, deps, `eslintConfig` (react-app), `browserslist`. |
+
+**Absent in this project:** `vite.config.*`, `tsconfig.json`, `tailwind.config.*` — it is **Create React App + react-app-rewired**, JavaScript only.
+
+Other: `/Users/emilsataev/Downloads/dWill_client/public/manifest.json`, `/Users/emilsataev/Downloads/dWill_client/public/_redirects` (typical for SPA hosting), `/Users/emilsataev/Downloads/dWill_client/.gitignore`, `/Users/emilsataev/Downloads/dWill_client/README.md`.
+
+---
+
+## Tech stack summary
+
+- **Framework:** React 18 (CRA 5 via `react-scripts` + `react-app-rewired`).
+- **Web3:** ethers v5, ethcall, WalletConnect v1/v2 packages.
+- **HTTP:** axios (Google Sheets “stats”), Express for serving `build/`.
+- **UI:** react-bootstrap, react-select, global CSS + canvas animation.
+- **Language:** JavaScript (no TypeScript).
+- **Routing:** None in the React app; `react-router-dom` appears unused in `src/`.
+
+If you need a deeper pass on any single file (e.g. full flow in `NewWill.js` or `Wills.js`), say which path to focus on.
