@@ -1200,6 +1200,12 @@ a {
   gap: 3px;
 }
 
+.btn-header-connect__footer img[alt="Optimism"] {
+  min-width: 14px;
+  width: 14px;
+  height: 14px;
+}
+
 @media (max-width: 767px) {
   .btn-header-connect__footer {
     font-size: 12px;

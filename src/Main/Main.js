@@ -27,6 +27,12 @@ class Main extends Component {
     disconnect = this.disconnect.bind(this)
 
     render() {
+        const hasWalletSession = Boolean(
+            localStorage.getItem('account') && (localStorage.getItem('wallet') || localStorage.getItem('walletconnect'))
+        )
+        const shouldShowConnectInMain = this.props.signer === null && !hasWalletSession
+        const isCreateWillUnavailable = !this.props.signer || !this.props.network || !this.props.contractAddress
+
         return (
             <div className='main-text'>
                 {/* <h1 className="block-one__title">Hello!</h1> */}
@@ -65,14 +71,14 @@ class Main extends Component {
                     null
                 } */}
                 {
-                    this.props.signer === null
+                    shouldShowConnectInMain
                         ?
                         <Connect setProperties={this.props.setProperties} network={this.props.network} />
                         :
                         <NewWill
                             contractAddress={this.props.contractAddress}
                             tokenAddress={this.props.tokenAddress}
-                            isEthereumNull={false}
+                            isEthereumNull={isCreateWillUnavailable}
                             network={this.props.network}
                             signer={this.props.signer}
                             signerAddress={this.props.signerAddress}
