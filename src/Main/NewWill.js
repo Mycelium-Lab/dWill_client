@@ -138,6 +138,7 @@ class NewWill extends Component {
     constructor(props) {
         super(props);
         this.tokensOptionsByNetwork = new Map();
+        this.networkSwitchTimeout = null;
         this.state = {
             signer: null,
             signerAddress: '',
@@ -169,7 +170,8 @@ class NewWill extends Component {
             confirmedText: '',
             hash: '',
             limitedText: 'unlimited',
-            isAddress: true
+            isAddress: true,
+            isNetworkSwitching: false
         };
     }
 
@@ -284,6 +286,36 @@ class NewWill extends Component {
             this.setState({ signer, signerAddress, contract, networkPic })
         } catch (error) {
             console.error(error)
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        if (
+            prevProps.network !== this.props.network ||
+            prevProps.contractAddress !== this.props.contractAddress
+        ) {
+            if (!this.hasWalletSession()) {
+                if (this.state.isNetworkSwitching) {
+                    this.setState({ isNetworkSwitching: false })
+                }
+                return
+            }
+            if (this.networkSwitchTimeout) {
+                clearTimeout(this.networkSwitchTimeout)
+            }
+            if (!this.state.isNetworkSwitching) {
+                this.setState({ isNetworkSwitching: true })
+            }
+            this.networkSwitchTimeout = setTimeout(() => {
+                this.setState({ isNetworkSwitching: false })
+                this.networkSwitchTimeout = null
+            }, 700)
+        }
+    }
+
+    componentWillUnmount() {
+        if (this.networkSwitchTimeout) {
+            clearTimeout(this.networkSwitchTimeout)
         }
     }
 
@@ -756,6 +788,39 @@ class NewWill extends Component {
     handleShowWalletNotExist = this.handleShowWalletNotExist.bind(this)
     handleCloseWalletNotExist = this.handleCloseWalletNotExist.bind(this)
 
+    hasWalletSession() {
+        const hasLocalSession = Boolean(
+            localStorage.getItem('account') &&
+            (localStorage.getItem('wallet') || localStorage.getItem('walletconnect'))
+        )
+        return hasLocalSession || this.isSignerReady()
+    }
+
+    isSignerReady() {
+        return Boolean(this.props.signer && this.props.signerAddress)
+    }
+
+    isNetworkReady() {
+        return Boolean(this.props.network && this.props.contractAddress)
+    }
+
+    isCreateTemporarilyBlocked() {
+        return this.hasWalletSession() && (this.state.isNetworkSwitching || !this.isSignerReady() || !this.isNetworkReady())
+    }
+
+    handleNewWillButtonClick = () => {
+        if (!this.hasWalletSession()) {
+            this.handleShowWalletNotExist()
+            return
+        }
+        if (this.isCreateTemporarilyBlocked()) {
+            return
+        }
+        this.handleShow()
+    }
+
+    handleNewWillButtonClick = this.handleNewWillButtonClick.bind(this)
+
     handleShowDoneNewWill = (hash) => this.setState({ newWillDone: true, hash })
     handleCloseDoneNewWill = () => this.setState({ newWillDone: false })
 
@@ -777,33 +842,40 @@ class NewWill extends Component {
     handleCloseEventConfirmed = this.handleCloseEventConfirmed.bind(this)
 
     render() {
+        const hasWalletSession = this.hasWalletSession()
+        const isCreateTemporarilyBlocked = this.isCreateTemporarilyBlocked()
+        const networkSwitchHint = 'Подождите завершения переключения сети и выберите поддерживаемую сеть в кошельке'
+
         return (
             <><div>
-                <Button id="newwill-button" variant="primary" className="btn-new-will" onClick={this.props.isEthereumNull === false ? this.handleShow : this.handleShowWalletNotExist}>
+                <Button
+                    id="newwill-button"
+                    variant="primary"
+                    className="btn-new-will"
+                    onClick={this.handleNewWillButtonClick}
+                    disabled={isCreateTemporarilyBlocked}
+                    title={isCreateTemporarilyBlocked ? networkSwitchHint : undefined}
+                >
                     New dWill
                 </Button>
+                {
+                    hasWalletSession && isCreateTemporarilyBlocked
+                        ? <div className="btn-new-will__hint">{networkSwitchHint}</div>
+                        : null
+                }
                 <div className='modal_fade'></div>
-                <Modal show={this.state.showWalletNotExist} onHide={this.handleCloseWalletNotExist} className='modal_content' style={{
-                    position: 'absolute',
-                    left: '25%',
-                    top: '150px',
-                    background: '#FFFFFF',
-                }}>
-                    <Modal.Header className='modal_new_will'>
+                <Modal show={this.state.showWalletNotExist} onHide={this.handleCloseWalletNotExist} className='modal-wallet-not-exist' centered>
+                    <Modal.Header className='modal-wallet-not-exist__header'>
                         <Button className='bnt_close' onClick={this.handleCloseWalletNotExist}>
                             <img src={closeModalPic} alt="close" />
                         </Button>
-                        <Modal.Title className='modal_title'>Wallet Not Exist</Modal.Title>
+                        <Modal.Title className='modal_title modal-wallet-not-exist__title'>Connect wallet</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body className='modal_new_will'>
-                        <div className='title_trusted-wallet'>To create a dWill connect a Web3 wallet</div>
-                        <button className='btn-new-will'>
-                            <img src="" alt="Connect" />
-                            Connect MetaMask
-                        </button>
-                        <p className='title_trusted-wallet'>What is a wallet?</p>
-                        <p className='title_trusted-wallet'>Wallets are used to send, receive, and store digital
-                            assets. Connecting a wallet lets you interact with apps.
+                    <Modal.Body className='modal-wallet-not-exist__body'>
+                        <p className='modal-wallet-not-exist__text'>To create a dWill, connect a Web3 wallet in the header.</p>
+                        <p className='modal-wallet-not-exist__label'>What is a wallet?</p>
+                        <p className='modal-wallet-not-exist__text modal-wallet-not-exist__text--small'>
+                            Wallets are used to send, receive, and store digital assets. Connecting a wallet lets you interact with apps.{' '}
                             <a href="https://metamask.io/" target="_blank" rel="noreferrer">Install the wallet.</a>
                         </p>
                     </Modal.Body>

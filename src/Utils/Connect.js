@@ -494,7 +494,7 @@ class Connect extends Component {
                 return this._renderNetwork(ArbitrumPic2, 'Arbitrum')
             }
         }
-        return <span className="btn-header-connect__network-placeholder">(выберите сеть)</span>
+        return <span className="btn-header-connect__network-placeholder">(choose network)</span>
     }
 
     renderNetwork = this.renderNetwork.bind(this)

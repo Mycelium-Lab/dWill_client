@@ -536,19 +536,19 @@ class Wills extends Component {
             if (error.message !== undefined) {
                 if (error.message.includes('Time is undefined')) {
                     this.setState({
-                        errortext: 'Выберите что делать со временем'
+                        errortext: 'Choose what to do with the time'
                     })
                     this.handleShowError()
                 }
                 if (error.message.includes('Nothing to update')) {
                     this.setState({
-                        errortext: 'Нет обновленных данных'
+                        errortext: 'No updated data'
                     })
                     this.handleShowError()
                 }
                 if (error.message === `If you want to change the time, enter all the input data, otherwise do not enter the input data`) {
                     this.setState({
-                        errortext: 'Если вы хотите изменить время, введите все входные данные, в противном случае не вводите входные данные'
+                        errortext: 'If you want to change the time, enter all the input data, otherwise do not enter the input data'
                     })
                 }
                 if (error.message.includes(`Time when withdraw is lower then now`)) {
@@ -901,7 +901,7 @@ class Wills extends Component {
             console.error(error)
             if (error.message.includes('resolver or addr is not configured')) {
                 this.setState({
-                    errortext: 'Выберите токен',
+                    errortext: 'Choose the token',
                     amount: '0',
                     isUnlimitedAmount: false
                 })

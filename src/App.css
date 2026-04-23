@@ -384,12 +384,34 @@ ul {
   background: #70c7a0;
 }
 
+.btn-new-will:disabled,
+.btn-new-will:disabled:hover {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+  background: #7fd3ab;
+  box-shadow: 0 8px 20px rgba(127,211,171,0.25);
+}
+
+.btn-new-will__hint {
+  margin-top: 10px;
+  text-align: center;
+  color: #64748B;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
 @media (max-width: 767px) {
   .btn-new-will {
     width: 200px;
     height: 40px;
     margin-top: 0;
     font-size: 14px;
+  }
+
+  .btn-new-will__hint {
+    margin-top: 8px;
+    font-size: 12px;
   }
 }
 
@@ -1322,6 +1344,56 @@ a {
   z-index: 9998;
 }
 
+.modal-wallet-not-exist .modal-dialog {
+  max-width: 460px;
+}
+
+.modal-wallet-not-exist .modal-content {
+  border: 1px solid #E2E8F0;
+  border-radius: 24px;
+  box-shadow: 0 24px 64px rgba(15,23,42,0.18);
+  background: #FFFFFF;
+}
+
+.modal-wallet-not-exist__header {
+  border-bottom: none;
+  padding: 24px 28px 0;
+  position: relative;
+}
+
+.modal-wallet-not-exist__body {
+  padding: 10px 28px 24px;
+}
+
+.modal-wallet-not-exist__title {
+  margin-bottom: 0;
+  color: #1E293B;
+}
+
+.modal-wallet-not-exist__label {
+  margin-bottom: 8px;
+  font-size: 16px;
+  color: #334155;
+  font-weight: 600;
+}
+
+.modal-wallet-not-exist__text {
+  margin-bottom: 14px;
+  color: #475569;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.modal-wallet-not-exist__text--small {
+  margin-bottom: 0;
+  font-size: 14px;
+}
+
+.modal-wallet-not-exist__text a {
+  color: #4285F4;
+  text-decoration: none;
+}
+
 .modal-open {
   overflow: auto;
   padding: 0;
@@ -1430,6 +1502,28 @@ body.modal-open.small-modal {
   .modal-choose .modal-footer img {
     width: 67px;
     height: 67px;
+  }
+
+  .modal-wallet-not-exist .modal-dialog {
+    max-width: 340px;
+    margin: 0 auto;
+  }
+
+  .modal-wallet-not-exist__header {
+    padding: 20px 20px 0;
+  }
+
+  .modal-wallet-not-exist__body {
+    padding: 8px 20px 20px;
+  }
+
+  .modal-wallet-not-exist__label {
+    font-size: 15px;
+  }
+
+  .modal-wallet-not-exist__text,
+  .modal-wallet-not-exist__text--small {
+    font-size: 13px;
   }
 }
 
