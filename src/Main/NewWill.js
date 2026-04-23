@@ -876,7 +876,7 @@ class NewWill extends Component {
                     }
                 </Button>
                 <div className='modal_fade'></div>
-                <Modal show={this.state.showWalletNotExist} onHide={this.handleCloseWalletNotExist} className='modal-wallet-not-exist' centered>
+                <Modal show={this.state.showWalletNotExist} onHide={this.handleCloseWalletNotExist} className='modal_content modal-wallet-not-exist' centered>
                     <Modal.Header className='modal-wallet-not-exist__header'>
                         <Button className='bnt_close' onClick={this.handleCloseWalletNotExist}>
                             <img src={closeModalPic} alt="close" />

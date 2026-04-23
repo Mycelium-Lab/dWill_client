@@ -1359,6 +1359,16 @@ a {
   max-width: 460px;
 }
 
+.modal-wallet-not-exist.show {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
 .modal-wallet-not-exist .modal-content {
   border: 1px solid #E2E8F0;
   border-radius: 24px;
@@ -1518,6 +1528,10 @@ body.modal-open.small-modal {
   .modal-wallet-not-exist .modal-dialog {
     max-width: 340px;
     margin: 0 auto;
+  }
+
+  .modal-wallet-not-exist.show {
+    padding: 12px;
   }
 
   .modal-wallet-not-exist__header {
