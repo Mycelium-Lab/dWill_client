@@ -366,7 +366,10 @@ ul {
   background: #7fd3ab;
   width: 350px;
   height: 50px;
-  margin: auto;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   box-shadow: 0 12px 30px rgba(127,211,171,0.35);
   border-radius: 20px;
   border: none;
@@ -393,12 +396,25 @@ ul {
   box-shadow: 0 8px 20px rgba(127,211,171,0.25);
 }
 
-.btn-new-will__hint {
-  margin-top: 10px;
-  text-align: center;
-  color: #64748B;
-  font-size: 13px;
-  line-height: 1.35;
+.btn-new-will__loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-new-will__spinner {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-top-color: #FFFFFF;
+  animation: btn-new-will-spin 0.75s linear infinite;
+}
+
+@keyframes btn-new-will-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (max-width: 767px) {
@@ -407,11 +423,6 @@ ul {
     height: 40px;
     margin-top: 0;
     font-size: 14px;
-  }
-
-  .btn-new-will__hint {
-    margin-top: 8px;
-    font-size: 12px;
   }
 }
 

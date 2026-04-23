@@ -171,7 +171,8 @@ class NewWill extends Component {
             hash: '',
             limitedText: 'unlimited',
             isAddress: true,
-            isNetworkSwitching: false
+            isNetworkSwitching: false,
+            blockingModalType: 'wallet'
         };
     }
 
@@ -782,7 +783,7 @@ class NewWill extends Component {
     handleShowError = this.handleShowError.bind(this)
     handleCloseError = this.handleCloseError.bind(this)
 
-    handleShowWalletNotExist = () => this.setState({ showWalletNotExist: true })
+    handleShowWalletNotExist = (blockingModalType = 'wallet') => this.setState({ showWalletNotExist: true, blockingModalType })
     handleCloseWalletNotExist = () => this.setState({ showWalletNotExist: false })
 
     handleShowWalletNotExist = this.handleShowWalletNotExist.bind(this)
@@ -805,15 +806,19 @@ class NewWill extends Component {
     }
 
     isCreateTemporarilyBlocked() {
-        return this.hasWalletSession() && (this.state.isNetworkSwitching || !this.isSignerReady() || !this.isNetworkReady())
+        return this.state.isNetworkSwitching
     }
 
     handleNewWillButtonClick = () => {
-        if (!this.hasWalletSession()) {
-            this.handleShowWalletNotExist()
+        if (this.state.isNetworkSwitching) {
             return
         }
-        if (this.isCreateTemporarilyBlocked()) {
+        if (!this.hasWalletSession()) {
+            this.handleShowWalletNotExist('wallet')
+            return
+        }
+        if (!this.isSignerReady() || !this.isNetworkReady()) {
+            this.handleShowWalletNotExist('network')
             return
         }
         this.handleShow()
@@ -842,9 +847,12 @@ class NewWill extends Component {
     handleCloseEventConfirmed = this.handleCloseEventConfirmed.bind(this)
 
     render() {
-        const hasWalletSession = this.hasWalletSession()
         const isCreateTemporarilyBlocked = this.isCreateTemporarilyBlocked()
-        const networkSwitchHint = 'Подождите завершения переключения сети и выберите поддерживаемую сеть в кошельке'
+        const isNetworkModal = this.state.blockingModalType === 'network'
+        const blockingModalTitle = isNetworkModal ? 'Network is not selected' : 'Connect wallet'
+        const blockingModalText = isNetworkModal
+            ? 'Please select a supported network in your wallet and try again.'
+            : 'To create a dWill, connect a Web3 wallet in the header.'
 
         return (
             <><div>
@@ -854,30 +862,46 @@ class NewWill extends Component {
                     className="btn-new-will"
                     onClick={this.handleNewWillButtonClick}
                     disabled={isCreateTemporarilyBlocked}
-                    title={isCreateTemporarilyBlocked ? networkSwitchHint : undefined}
+                    title={isCreateTemporarilyBlocked ? 'Loading network data...' : undefined}
                 >
-                    New dWill
+                    {
+                        isCreateTemporarilyBlocked
+                            ? (
+                                <span className="btn-new-will__loading">
+                                    <span className="btn-new-will__spinner" aria-hidden="true"></span>
+                                    Loading
+                                </span>
+                            )
+                            : 'New dWill'
+                    }
                 </Button>
-                {
-                    hasWalletSession && isCreateTemporarilyBlocked
-                        ? <div className="btn-new-will__hint">{networkSwitchHint}</div>
-                        : null
-                }
                 <div className='modal_fade'></div>
                 <Modal show={this.state.showWalletNotExist} onHide={this.handleCloseWalletNotExist} className='modal-wallet-not-exist' centered>
                     <Modal.Header className='modal-wallet-not-exist__header'>
                         <Button className='bnt_close' onClick={this.handleCloseWalletNotExist}>
                             <img src={closeModalPic} alt="close" />
                         </Button>
-                        <Modal.Title className='modal_title modal-wallet-not-exist__title'>Connect wallet</Modal.Title>
+                        <Modal.Title className='modal_title modal-wallet-not-exist__title'>{blockingModalTitle}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body className='modal-wallet-not-exist__body'>
-                        <p className='modal-wallet-not-exist__text'>To create a dWill, connect a Web3 wallet in the header.</p>
-                        <p className='modal-wallet-not-exist__label'>What is a wallet?</p>
-                        <p className='modal-wallet-not-exist__text modal-wallet-not-exist__text--small'>
-                            Wallets are used to send, receive, and store digital assets. Connecting a wallet lets you interact with apps.{' '}
-                            <a href="https://metamask.io/" target="_blank" rel="noreferrer">Install the wallet.</a>
-                        </p>
+                        <p className='modal-wallet-not-exist__text'>{blockingModalText}</p>
+                        {
+                            isNetworkModal
+                                ? (
+                                    <p className='modal-wallet-not-exist__text modal-wallet-not-exist__text--small'>
+                                        If the network was switched recently, wait a moment and try again.
+                                    </p>
+                                )
+                                : (
+                                    <>
+                                        <p className='modal-wallet-not-exist__label'>What is a wallet?</p>
+                                        <p className='modal-wallet-not-exist__text modal-wallet-not-exist__text--small'>
+                                            Wallets are used to send, receive, and store digital assets. Connecting a wallet lets you interact with apps.{' '}
+                                            <a href="https://metamask.io/" target="_blank" rel="noreferrer">Install the wallet.</a>
+                                        </p>
+                                    </>
+                                )
+                        }
                     </Modal.Body>
                 </Modal>
                 <Modal id="willmodal" show={this.state.show} className='will-block' style={styles.modal_new_will}>
