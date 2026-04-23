@@ -1359,6 +1359,12 @@ a {
   max-width: 460px;
 }
 
+.modal-wallet-not-exist.modal {
+  background-color: transparent;
+  box-shadow: none;
+  border-radius: 0;
+}
+
 .modal-wallet-not-exist.show {
   position: fixed;
   inset: 0;
@@ -1367,6 +1373,7 @@ a {
   align-items: center;
   justify-content: center;
   padding: 20px;
+  background: transparent;
 }
 
 .modal-wallet-not-exist .modal-content {
