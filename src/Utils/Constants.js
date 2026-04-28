@@ -34,7 +34,7 @@ export const chainIDs = {
 export const chainRPCURL = {
     // Polygon: 'https://polygon-mainnet.g.alchemy.com/v2/B0XeubnwCZAJmAmGXAqtYarQGn9VQL1A',
     // Polygon: 'https://polygon-mainnet.g.alchemy.com/v2/PdErp7XIFnF7-ZveImUZxGqI7zwqDvZ6',
-    Polygon: 'https://rpc-mainnet.maticvigil.com',
+    Polygon: 'https://polygon-rpc.com',
     Mumbai: 'https://rpc-mumbai.maticvigil.com',
     BinanceTestnet: 'https://data-seed-prebsc-1-s1.binance.org:8545',
     BinanceMainnet: 'https://bsc-dataseed.binance.org',
@@ -45,7 +45,7 @@ export const chainRPCURL = {
     OptimismMainnet: 'https://opt-mainnet.g.alchemy.com/v2/r2Y15pOCmYjzWruKk2eIKmJQEz1WhvDK'
 }
 export const NetworkProviders = {
-    Polygon: 'https://explorer.matic.network',
+    Polygon: 'https://polygonscan.com',
     Mumbai: 'https://mumbai.polygonscan.com',
     BinanceTestnet: 'https://testnet.bscscan.com',
     BinanceMainnet: 'https://bscscan.com',

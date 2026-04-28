@@ -253,7 +253,7 @@ class Connect extends Component {
                 await this._changeNetwork(chainIDs.EthereumMainnet, 'Ethereum', 'ETH', chainRPCURL.EthereumMainnet)
             }
             if (chainId === chainIDs.Polygon && chainId !== this.props.network) {
-                await this._changeNetwork(chainIDs.Polygon, 'Polygon', 'MATIC', chainRPCURL.Polygon)
+                await this._changeNetwork(chainIDs.Polygon, 'Polygon', 'POL', chainRPCURL.Polygon)
             }
             if (chainId === chainIDs.BinanceMainnet && chainId !== this.props.network) {
                 await this._changeNetwork(chainIDs.BinanceMainnet, 'BNB', 'BNB', chainRPCURL.BinanceMainnet)
@@ -318,7 +318,7 @@ class Connect extends Component {
                 await this._changeNetworkWalletConnect(provider, chainIDs.EthereumMainnet, 'Ethereum', 'ETH', chainRPCURL.EthereumMainnet)
             }
             if (chainId === chainIDs.Polygon && chainId !== this.props.network) {
-                await this._changeNetworkWalletConnect(provider, chainIDs.Polygon, 'Polygon', 'MATIC', chainRPCURL.Polygon)
+                await this._changeNetworkWalletConnect(provider, chainIDs.Polygon, 'Polygon', 'POL', chainRPCURL.Polygon)
             }
             if (chainId === chainIDs.BinanceMainnet && chainId !== this.props.network) {
                 await this._changeNetworkWalletConnect(provider, chainIDs.BinanceMainnet, 'BNB', 'BNB', chainRPCURL.BinanceMainnet)

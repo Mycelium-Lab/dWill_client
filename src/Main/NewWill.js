@@ -180,28 +180,16 @@ class NewWill extends Component {
         try {
             const signer = this.props.signer
             const signerAddress = this.props.signerAddress
-            const contract = new ethers.Contract(this.props.contractAddress, TheWill.abi, signer)
-            this.createTime()
-            let networkPic
-            if (this.props.network === chainIDs.Mumbai) {
-                networkPic = PolygonPic
-            } else if (this.props.network === chainIDs.Goerli) {
-                networkPic = EthereumPic
-            } else if (this.props.network === chainIDs.Polygon) {
-                networkPic = PolygonPic
-            } else if (this.props.network === chainIDs.BinanceTestnet) {
-                networkPic = BinancePic
-            } else if (this.props.network === chainIDs.BinanceMainnet) {
-                networkPic = BinancePic
-            } else if (this.props.network === chainIDs.EthereumMainnet) {
-                networkPic = EthereumPic
-            } else if (this.props.network === chainIDs.AvalancheMainnet) {
-                networkPic = AvalanchePic
-            } else if (this.props.network === chainIDs.OptimismMainnet) {
-                networkPic = OptimismPic
-            } else if (this.props.network === chainIDs.ArbitrumMainnet) {
-                networkPic = ArbitrumPic
+            let contract = null
+            if (this.props.contractAddress && ethers.utils.isAddress(this.props.contractAddress) && signer) {
+                try {
+                    contract = new ethers.Contract(this.props.contractAddress, TheWill.abi, signer)
+                } catch (contractError) {
+                    console.error(contractError)
+                }
             }
+            this.createTime()
+            const networkPic = this.getNetworkPic(this.props.network)
             const body = document.getElementsByTagName('body')
             const App = document.getElementsByClassName('App')
             const MainText = document.getElementsByClassName('main-text')
@@ -359,6 +347,28 @@ class NewWill extends Component {
         return options;
     }
 
+    getNetworkPic(networkId) {
+        switch (networkId) {
+            case chainIDs.Mumbai:
+            case chainIDs.Polygon:
+                return PolygonPic
+            case chainIDs.Goerli:
+            case chainIDs.EthereumMainnet:
+                return EthereumPic
+            case chainIDs.BinanceTestnet:
+            case chainIDs.BinanceMainnet:
+                return BinancePic
+            case chainIDs.AvalancheMainnet:
+                return AvalanchePic
+            case chainIDs.OptimismMainnet:
+                return OptimismPic
+            case chainIDs.ArbitrumMainnet:
+                return ArbitrumPic
+            default:
+                return EthereumPic
+        }
+    }
+
     prefetchTokenIcons() {
         const priorityTokens = this.getTokenOptions().slice(0, 40);
         priorityTokens.forEach((token) => {
@@ -386,7 +396,24 @@ class NewWill extends Component {
 
     async approve() {
         try {
-            const { contractAddress, signer, tokensValue } = this.state
+            const { tokensValue } = this.state
+            const signer = this.props.signer || this.state.signer
+            const contractAddress = this.props.contractAddress || this.state.contractAddress
+            if (!signer) {
+                this.handleShowError('Wallet is not connected')
+                setTimeout(() => this.handleCloseError(), 10000)
+                return
+            }
+            if (!tokensValue || !ethers.utils.isAddress(tokensValue)) {
+                this.handleShowError('Please select a token to inherit')
+                setTimeout(() => this.handleCloseError(), 10000)
+                return
+            }
+            if (!contractAddress || !ethers.utils.isAddress(contractAddress)) {
+                this.handleShowError('dWill not exist on this network')
+                setTimeout(() => this.handleCloseError(), 10000)
+                return
+            }
             const _token = new ethers.Contract(tokensValue, ERC20.abi, signer)
             this.handleShowConfirm()
             const symbol = await _token.symbol()
@@ -407,9 +434,14 @@ class NewWill extends Component {
                 })
                 .catch(err => {
                     console.log(err)
-                    if (err.message.includes('resolver or addr is not') || err.reason.includes('resolver or addr is not')) {
-                        console.log('err')
+                    const errMessage = (err && err.message) || ''
+                    const errReason = (err && err.reason) || ''
+                    if (errMessage.includes('resolver or addr is not') || errReason.includes('resolver or addr is not')) {
                         this.handleShowError('Please select a token to inherit')
+                    } else if (errMessage.includes('user rejected') || errReason.includes('user rejected')) {
+                        // user cancelled in wallet -- silent
+                    } else {
+                        this.handleShowError(errMessage || 'Approval failed')
                     }
                     setTimeout(() => {
                         this.handleCloseError()
@@ -453,7 +485,24 @@ class NewWill extends Component {
 
     async newWill() {
         try {
-            const { contract, heirAddress, amount, isUnlimitedAmount, tokensValue, signer } = this.state
+            const { heirAddress, amount, isUnlimitedAmount, tokensValue } = this.state
+            const signer = this.props.signer || this.state.signer
+            const contractAddress = this.props.contractAddress || this.state.contractAddress
+            if (!signer) {
+                this.handleShowError('Wallet is not connected')
+                setTimeout(() => this.handleCloseError(), 10000)
+                return
+            }
+            const contract = this.state.contract || (
+                contractAddress && ethers.utils.isAddress(contractAddress)
+                    ? new ethers.Contract(contractAddress, TheWill.abi, signer)
+                    : null
+            )
+            if (!contract) {
+                this.handleShowError('dWill not exist on this network')
+                setTimeout(() => this.handleCloseError(), 10000)
+                return
+            }
             const _token = new ethers.Contract(tokensValue, ERC20.abi, signer)
             let date = this.createTime()
             let timeUnixWhenWithdraw = 0;
@@ -501,8 +550,12 @@ class NewWill extends Component {
 
     async onChangeAmount(event) {
         try {
-            const { contractAddress, signer, signerAddress, tokensValue, contract } = this.state
+            const { tokensValue, contract } = this.state
+            const signer = this.props.signer || this.state.signer
+            const signerAddress = this.props.signerAddress || this.state.signerAddress
+            const contractAddress = this.props.contractAddress || this.state.contractAddress
             if (tokensValue === '') throw Error('resolver or addr is not configured')
+            if (!signer) throw Error('signer is not configured')
             if (parseFloat(event.target.value) >= 0) {
                 this.setState({
                     amount: event.target.value
@@ -545,13 +598,19 @@ class NewWill extends Component {
 
     async onChangeUnlimitedAmount() {
         try {
-            const { contractAddress, signer, signerAddress, tokensValue, isUnlimitedAmount } = this.state
+            const { tokensValue, isUnlimitedAmount } = this.state
+            const signer = this.props.signer || this.state.signer
+            const signerAddress = this.props.signerAddress || this.state.signerAddress
+            const contractAddress = this.props.contractAddress || this.state.contractAddress
             //max amount uint256
             this.setState({
                 amount: isUnlimitedAmount === false ? ethers.constants.MaxUint256.toString() : '',
                 isUnlimitedAmount: isUnlimitedAmount === true ? false : true,
                 limitedText: isUnlimitedAmount === true ? 'limited by' : 'unlimited'
             })
+            if (!signer || !tokensValue || !ethers.utils.isAddress(tokensValue) || !ethers.utils.isAddress(contractAddress || '')) {
+                return
+            }
             const _token = new ethers.Contract(tokensValue, ERC20.abi, signer)
             const allowance = await _token.allowance(signerAddress, contractAddress)
             if (allowance.toString() === ethers.constants.MaxUint256.toString()) {
@@ -563,7 +622,7 @@ class NewWill extends Component {
             }
         } catch (error) {
             console.error(error)
-            if (error.message.includes('resolver or addr is not configured')) {
+            if (error.message && error.message.includes('resolver or addr is not configured')) {
                 // this.setState({
                 //     amount: '',
                 //     isUnlimitedAmount: false
@@ -577,7 +636,11 @@ class NewWill extends Component {
     }
 
     async onSetMaxAmount() {
-        const { contractAddress, signer, signerAddress, tokensValue, contract } = this.state
+        const { tokensValue, contract } = this.state
+        const signer = this.props.signer || this.state.signer
+        const signerAddress = this.props.signerAddress || this.state.signerAddress
+        const contractAddress = this.props.contractAddress || this.state.contractAddress
+        if (!signer || !tokensValue || !ethers.utils.isAddress(tokensValue) || !contract) return
         const _token = new ethers.Contract(tokensValue, ERC20.abi, signer)
         const allowance = await _token.allowance(signerAddress, contractAddress)
         const decimals = await _token.decimals()
@@ -625,12 +688,18 @@ class NewWill extends Component {
 
     async onChangeTokens(event) {
         try {
-            const { contractAddress, signer, signerAddress, amount, contract } = this.state
+            const { amount, contract } = this.state
+            const signer = this.props.signer || this.state.signer
+            const signerAddress = this.props.signerAddress || this.state.signerAddress
+            const contractAddress = this.props.contractAddress || this.state.contractAddress
             if (event.value === '') throw Error('token not exist here')
-            const _token = new ethers.Contract(event.value, ERC20.abi, signer)
             this.setState({
                 tokensValue: event.value
             })
+            if (!signer || !ethers.utils.isAddress(event.value) || !ethers.utils.isAddress(contractAddress || '') || !contract) {
+                return
+            }
+            const _token = new ethers.Contract(event.value, ERC20.abi, signer)
             const allowance = await _token.allowance(signerAddress, contractAddress)
             const decimals = await _token.decimals()
             const allWillsAmountThisToken = await contract.willAmountForToken(signerAddress, _token.address)
@@ -641,12 +710,13 @@ class NewWill extends Component {
             )
             this.changeApproved(allowance, amount)
         } catch (error) {
-            console.log(error.message)
-            if (error.message.includes('resolver or addr is not configured')) {
+            console.log(error && error.message)
+            const errMessage = (error && error.message) || ''
+            if (errMessage.includes('resolver or addr is not configured')) {
                 if (this.state.contractAddress === '') {
                     this.handleShowError('dWill not exist on this network')
                 }
-            } else if (error.message.includes('token not exist here')) {
+            } else if (errMessage.includes('token not exist here')) {
                 this.handleShowError('Not existed token')
             }
             setTimeout(() => {
@@ -949,8 +1019,12 @@ class NewWill extends Component {
                                     </Button>
                                 </div>
                             </div>
-                            <div className='modal-body__row modal-body__row-direction'>From the wallet <a href={`${this.props.networkProvider}/address/${this.state.signerAddress}`} target="_blank" rel="noreferrer" className='modal_wallet_link'>{this.state.signerAddress.slice(0, 6) + '...' + this.state.signerAddress.slice(this.state.signerAddress.length - 4, this.state.signerAddress.length)}</a>on the <i className="br"></i> {this.props.networkName} network
-                                <img src={this.state.networkPic} alt="networkpic" />
+                            <div className='modal-body__row modal-body__row-direction'>From the wallet <a href={`${this.props.networkProvider}/address/${this.props.signerAddress || this.state.signerAddress || ''}`} target="_blank" rel="noreferrer" className='modal_wallet_link'>{(() => {
+                                const addr = this.props.signerAddress || this.state.signerAddress || ''
+                                if (!addr) return ''
+                                return `${addr.slice(0, 6)}...${addr.slice(-4)}`
+                            })()}</a>on the <i className="br"></i> {this.props.networkName} network
+                                <img src={this.props.networkPic || this.getNetworkPic(this.props.network)} alt="networkpic" />
                                 <div className="your-wills__info-message" data-title={tooltipText.network}>
                                     <img src={infoBtn} alt="Info"></img>
                                 </div></div>
