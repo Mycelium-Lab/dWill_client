@@ -336,8 +336,14 @@ class NewWill extends Component {
         if (this.tokensOptionsByNetwork.has(networkId)) {
             return this.tokensOptionsByNetwork.get(networkId);
         }
+        const NATIVE_PSEUDO_ADDRESSES = new Set([
+            '0x0000000000000000000000000000000000000000',
+            '0x0000000000000000000000000000000000001010',
+            '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+        ]);
         const options = this.getTokensLists()
             .filter((token) => token && token.address && token.symbol)
+            .filter((token) => !NATIVE_PSEUDO_ADDRESSES.has(token.address.toLowerCase()))
             .map((token) => ({
                 value: token.address,
                 label: token.symbol,
@@ -636,33 +642,62 @@ class NewWill extends Component {
     }
 
     async onSetMaxAmount() {
-        const { tokensValue, contract } = this.state
-        const signer = this.props.signer || this.state.signer
-        const signerAddress = this.props.signerAddress || this.state.signerAddress
-        const contractAddress = this.props.contractAddress || this.state.contractAddress
-        if (!signer || !tokensValue || !ethers.utils.isAddress(tokensValue) || !contract) return
-        const _token = new ethers.Contract(tokensValue, ERC20.abi, signer)
-        const allowance = await _token.allowance(signerAddress, contractAddress)
-        const decimals = await _token.decimals()
-        const allWillsAmountThisToken = await contract.willAmountForToken(signerAddress, _token.address)
-        await _token.balanceOf(signerAddress)
-            .then(async (balance) => {
-                //set max amount allowed to send
-                this.setState({
-                    amount: (Math.floor((balance) / Math.pow(10, await _token.decimals()))).toString()
-                })
-                if (allowance.toString() === ethers.constants.MaxUint256.toString()) {
-                    this.setState({
-                        approved: true
-                    })
-                } else {
-                    this.changeApproved(
-                        BigInt(allowance),
-                        BigInt(balance) + BigInt(allWillsAmountThisToken),
-                        decimals
-                    )
-                }
+        try {
+            const { tokensValue } = this.state
+            const signer = this.props.signer || this.state.signer
+            const signerAddress = this.props.signerAddress || this.state.signerAddress
+            const contractAddress = this.props.contractAddress || this.state.contractAddress
+            if (!signer || !signerAddress) {
+                this.handleShowError('Wallet is not connected')
+                setTimeout(() => this.handleCloseError(), 10000)
+                return
+            }
+            if (!tokensValue || !ethers.utils.isAddress(tokensValue)) {
+                this.handleShowError('Please select a token to inherit')
+                setTimeout(() => this.handleCloseError(), 10000)
+                return
+            }
+            if (!contractAddress || !ethers.utils.isAddress(contractAddress)) {
+                this.handleShowError('dWill not exist on this network')
+                setTimeout(() => this.handleCloseError(), 10000)
+                return
+            }
+            const willsContract = this.state.contract
+                || new ethers.Contract(contractAddress, TheWill.abi, signer)
+            const _token = new ethers.Contract(tokensValue, ERC20.abi, signer)
+            const [allowance, decimals, balance, allWillsAmountThisToken] = await Promise.all([
+                _token.allowance(signerAddress, contractAddress),
+                _token.decimals(),
+                _token.balanceOf(signerAddress),
+                willsContract.willAmountForToken(signerAddress, _token.address)
+            ])
+            const divisor = ethers.BigNumber.from(10).pow(decimals)
+            const wholeAmount = balance.div(divisor).toString()
+            this.setState({
+                amount: wholeAmount,
+                contract: willsContract
             })
+            if (allowance.toString() === ethers.constants.MaxUint256.toString()) {
+                this.setState({ approved: true })
+            } else {
+                this.changeApproved(
+                    BigInt(allowance.toString()),
+                    BigInt(balance.toString()) + BigInt(allWillsAmountThisToken.toString()),
+                    decimals
+                )
+            }
+        } catch (error) {
+            console.error(error)
+            const msg = (error && (error.reason || error.message)) || ''
+            if (msg.includes('Unauthorized')) {
+                this.handleShowError('RPC of your wallet is unavailable. Switch RPC in wallet settings and try again.')
+            } else if (msg.includes('missing revert data') || msg.includes('CALL_EXCEPTION')) {
+                this.handleShowError('This token does not support standard ERC20 calls (e.g. native gas token). Pick a different token.')
+            } else {
+                this.handleShowError('Failed to read balance. Please try again.')
+            }
+            setTimeout(() => this.handleCloseError(), 10000)
+        }
     }
 
     changeApproved(allowance, amount) {
