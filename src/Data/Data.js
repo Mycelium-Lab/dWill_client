@@ -11,8 +11,8 @@ class Data extends Component {
             {
                 this.props.signer
                 ?
-                <div>
-                    <div>
+                <div className='page-data__inner'>
+                    <div className='page-data__toolbar'>
                         <ResetTimers 
                             ethcallProvider={this.props.ethcallProvider}
                             willsLength={this.props.willsLength}

@@ -380,37 +380,40 @@ ul {
 }
 
 .btn-new-will {
-  background: #7fd3ab;
-  width: 350px;
-  height: 50px;
+  background: #2bb37a;
+  width: auto;
+  min-width: 220px;
+  height: 44px;
+  padding: 0 22px;
   margin: 0 auto;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 12px 30px rgba(127,211,171,0.35);
-  border-radius: 20px;
+  gap: 8px;
+  box-shadow: 0 8px 20px rgba(43,179,122,0.25);
+  border-radius: 12px;
   border: none;
   font-weight: 600;
-  font-size: 16px;
-  line-height: 21px;
+  font-size: 14px;
+  line-height: 1;
   text-align: center;
   letter-spacing: 0.02em;
   color: #FFFFFF;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 .btn-new-will:hover {
+  background: #239b69;
   transform: translateY(-1px);
-  background: #70c7a0;
 }
 
 .btn-new-will:disabled,
 .btn-new-will:disabled:hover {
-  opacity: 0.65;
+  opacity: 0.6;
   cursor: not-allowed;
   transform: none;
-  background: #7fd3ab;
-  box-shadow: 0 8px 20px rgba(127,211,171,0.25);
+  background: #2bb37a;
+  box-shadow: none;
 }
 
 .btn-new-will__loading {
@@ -436,35 +439,40 @@ ul {
 
 @media (max-width: 767px) {
   .btn-new-will {
-    width: 200px;
-    height: 40px;
+    min-width: 180px;
+    height: 42px;
     margin-top: 0;
-    font-size: 14px;
+    font-size: 13px;
   }
 }
 
 .btn-default {
   border: 1px solid #E2E8F0;
-  border-radius: 16px;
-  color: #475569;
-  font-size: 13px;
+  border-radius: 10px;
+  color: #334155;
+  font-size: 12px;
   font-weight: 600;
-  height: 40px;
-  display: flex;
+  height: 32px;
+  display: inline-flex;
   align-items: center;
   background-color: #FFFFFF;
-  min-width: 120px;
+  min-width: 0;
   justify-content: center;
-  gap: 5px;
-  padding: 0 16px;
+  gap: 6px;
+  padding: 0 12px;
   margin: 0;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 .btn-default:hover {
   border-color: #CBD5E1;
   background-color: #F8FAFC;
+}
+
+.btn-default img {
+  width: 13px;
+  height: 13px;
 }
 
 .btn-primary {
@@ -1938,33 +1946,53 @@ input::-webkit-inner-spin-button {
 }
 
 .btn_reset-timers {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  display: inline-flex;
   align-items: center;
-  max-width: 400px;
+  justify-content: center;
   font-family: 'SF UI Text';
-  padding: 18px 34px 22px;
-  background: #7fd3ab;
-  border: none;
-  box-shadow: 0 12px 30px rgba(127,211,171,0.35);
-  border-radius: 24px;
-  color: #FFFFFF;
+  padding: 8px 16px;
+  background: #FFFFFF;
+  border: 1px solid #cdebdc;
+  box-shadow: none;
+  border-radius: 999px;
+  color: #1f8b5f;
   font-weight: 600;
-  font-size: 18px;
-  margin: auto;
-  margin-top: 14px;
-  transition: all 0.2s ease;
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  margin: 0;
+  transition: all 0.15s ease;
+  cursor: pointer;
 }
 
 .btn_reset-timers:hover {
-  transform: translateY(-1px);
-  background: #70c7a0;
+  background: #f3fbf6;
+  border-color: #7fd3ab;
+}
+
+.btn_reset-timers:active {
+  transform: translateY(1px);
+}
+
+.btn_reset-timers-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn_reset-timers-label::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #2bb37a;
+  box-shadow: 0 0 0 3px rgba(43,179,122,0.15);
 }
 
 @media (max-width: 767px) {
   .btn_reset-timers {
-    margin-top: 0;
+    padding: 7px 14px;
+    font-size: 12px;
   }
 
   .bnt_close {
@@ -1989,18 +2017,18 @@ input::-webkit-inner-spin-button {
   position: relative;
   max-width: 100%;
   width: 100%;
-  padding: 28px 36px;
+  padding: 18px 22px 20px;
   background: #FFFFFF;
-  box-shadow: 0 20px 60px rgba(15,23,42,0.06);
-  border: 1px solid #E2E8F0;
-  color: #475569;
+  box-shadow: 0 8px 24px rgba(15,23,42,0.04);
+  border: 1px solid #E5E7EB;
+  color: #334155;
   margin-bottom: 0;
-  border-radius: 28px;
+  border-radius: 18px;
 }
 
 .wills-description-block .your-wills__info-message {
-  right: 10px;
-  top: 10px;
+  right: 14px;
+  top: 14px;
   position: absolute;
 }
 
@@ -2011,8 +2039,7 @@ input::-webkit-inner-spin-button {
   align-items: flex-start;
   justify-content: space-between;
   gap: 20px;
-  padding: 26px 5px;
-
+  padding: 14px 0;
 }
 
 .your-wills {
@@ -2037,19 +2064,23 @@ input::-webkit-inner-spin-button {
 }
 
 .wills-description-block__id {
-  display: inline-block;
-  padding: 2px 10px;
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 10px;
   font-size: 11px;
-  font-weight: 600;
-  background-color: #ecfaf3;
-  color: #5bbf91;
-  border-radius: 8px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background-color: #2bb37a;
+  color: #FFFFFF;
+  border-radius: 6px;
   position: static;
   margin-bottom: 8px;
 }
 
 .wills-description-block__symbol {
-  color: #5bbf91;
+  color: #1f8b5f;
   font-weight: 600;
 }
 
@@ -2308,12 +2339,13 @@ input::-webkit-inner-spin-button {
 .your_inheritances-h3,
 .wills_list_h3 {
   width: auto;
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 24px;
-  text-align: center;
-  letter-spacing: 0.01em;
-  color: #334155;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: left;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #64748B;
   margin: 0;
 }
 
@@ -2456,12 +2488,12 @@ ul.your-wills__footer {
 }
 
 .your_inheritances_ul-text {
-  color: #475569;
+  color: #1F2937;
   word-break: break-word;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
-  line-height: 1.6;
+  line-height: 1.55;
   letter-spacing: normal;
 }
 
@@ -2472,11 +2504,11 @@ ul.your-wills__footer {
 .your_inheritances_ul-text__head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  border-bottom: 1px solid #E2E8F0;
-  padding-bottom: 16px;
-  gap: 10px;
+  justify-content: flex-start;
+  margin-bottom: 6px;
+  padding-bottom: 10px;
+  gap: 8px;
+  border-bottom: 1px solid #EEF2F4;
 }
 
 .input-group-year {
@@ -2580,15 +2612,29 @@ ul.your-wills__footer {
 } */
 
 .page-data {
-  max-width: 1100px;
+  max-width: 880px;
   margin: 0 auto;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   padding-bottom: 24px;
-  padding-top: 20px;
-  gap: 16px;
+  padding-top: 16px;
+  gap: 12px;
+}
+
+.page-data__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.page-data__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-bottom: 0;
 }
 
 .page-data a {
@@ -2596,27 +2642,28 @@ ul.your-wills__footer {
 }
 
 .page-data__block-container {
-  gap: 40px;
+  gap: 18px;
 }
 
 @media (max-width: 767px) {
   .page-data__block-container {
     flex-direction: column;
-    gap: 20px;
+    gap: 12px;
   }
 }
 
 .btn_data-js {
-  margin-top: 24px;
+  margin-top: 8px;
 }
 
 .btn_data-js>div {
   display: flex;
+  justify-content: center;
 }
 
 @media (max-width: 767px) {
   .btn_data-js {
-    margin-top: 50px;
+    margin-top: 16px;
   }
 }
 
@@ -2800,41 +2847,9 @@ ul.your-wills__footer {
   text-decoration: underline;
 }
 
-.btn_reset-timers-h2 {
-  width: 142px;
-  display: flex;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 24px;
-}
-
 @media (max-width: 767px) {
-  .btn_reset-timers-h2 {
-    font-size: 18px;
-  }
-}
-
-.btn_reset-timers-h3 {
-  margin-top: 5px;
-  max-width: 332px;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 13px;
-  line-height: 18px;
-  color: rgba(255,255,255,0.85);
-}
-
-@media (max-width: 767px) {
-  .btn_reset-timers-h3 {
-    font-size: 12px;
-    margin-top: 10px;
-  }
-
   .btn_reset-timers {
-    padding: 17px 28px;
-    max-width: 100%;
-    width: 100%;
+    width: auto;
   }
 }
 
@@ -2858,22 +2873,35 @@ ul.your-wills__footer {
 }
 
 .your-wills_text-info a {
-  margin: 8px 0 10px;
+  margin: 4px 0 8px;
   display: block;
+  word-break: break-all;
 }
 
 .your-wills_text-info {
-  line-height: 1.6;
+  line-height: 1.55;
+  color: #1F2937;
+  font-size: 14px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.your-wills_text-info > span:first-child {
+  display: block;
+  margin-bottom: 4px;
 }
 
 .your-wills__btns {
   display: flex;
-  flex-direction: column;
-  gap: 15px;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .your-wills_text-info__footer {
   font-size: 12px;
+  color: #475569;
 }
 
 .your-wills_text-info__footer>* {
@@ -2883,7 +2911,8 @@ ul.your-wills__footer {
 @media (max-width: 767px) {
   .your-wills__btns {
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
   }
 }
 
@@ -3888,13 +3917,9 @@ footer a {
     gap: 16px;
   }
 
-  .btn_reset-timers {
-    padding: 16px 28px;
-  }
-
   .btn-new-will {
-    width: 280px;
-    height: 46px;
+    min-width: 200px;
+    height: 42px;
   }
 
   .main-text {

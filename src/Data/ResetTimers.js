@@ -170,9 +170,14 @@ class ResetTimers extends Component {
     render() {
         return (
             <div>
-                <Button id='reset-timers' variant="primary" className="btn_reset-timers" onClick={this.resetTimers}>
-                    <h2 id='reset-timersh2' className='btn_reset-timers-h2'>RESET TIMERS</h2>
-                    <h3 id='reset-timersh3' className='btn_reset-timers-h3'>I am active, and I still have access to my wallet</h3>
+                <Button
+                    id='reset-timers'
+                    variant="primary"
+                    className="btn_reset-timers"
+                    onClick={this.resetTimers}
+                    title="I am active, and I still have access to my wallet"
+                >
+                    <span id='reset-timersh2' className='btn_reset-timers-label'>Reset timers</span>
                 </Button>
                 <Modal show={this.state.showConfirm} className="modal-confirm">
                     <Modal.Header>
