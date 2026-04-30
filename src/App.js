@@ -23,6 +23,7 @@ import Main from './Main/Main';
 
 import { renderStars } from "./Utils/stars";
 import { EthereumProvider } from "@walletconnect/ethereum-provider";
+import { getInjectedProvider } from "./Utils/getInjectedProvider";
 
 window.mobileCheck = function() {
   let check = false;
@@ -117,35 +118,41 @@ class App extends Component {
       const walletconnect = localStorage.getItem('walletconnect')
       if (localStorageAccount !== null && (walletType !== null || walletconnect !== null)) {
         if (walletType === 'Metamask') {
-          const provider = new ethers.providers.Web3Provider(window.ethereum)
-          const accounts = await provider.send("eth_requestAccounts", []);
-          const signer = provider.getSigner()
-          window.ethereum.on('accountsChanged', async (_accounts) => {
-            if (_accounts.length === 0) {
-              localStorage.removeItem('account')
-              localStorage.removeItem('wallet')
-              this.setState({
-                provider: null,
-                signer: null,
-                signerAddress: null
-              })
-            } else {
-              localStorage.setItem('account', _accounts[0])
-              await provider.send("eth_requestAccounts", []);
-              const _signer = provider.getSigner()
-              this.setState({
-                signer: _signer,
-                signerAddress: _accounts[0]
-              })
-            }
-            window.location.reload()
-          })
-          window.ethereum.on('chainChanged', () => {
-            window.location.reload()
-          })
-          localStorage.setItem('account', accounts[0]);
-          localStorage.setItem('wallet', 'Metamask');
-          this.setProperties(provider, signer, accounts[0])
+          const injectedProvider = getInjectedProvider()
+          if (!injectedProvider) {
+            localStorage.removeItem('account')
+            localStorage.removeItem('wallet')
+          } else {
+            const provider = new ethers.providers.Web3Provider(injectedProvider)
+            const accounts = await provider.send("eth_requestAccounts", []);
+            const signer = provider.getSigner()
+            injectedProvider.on('accountsChanged', async (_accounts) => {
+              if (_accounts.length === 0) {
+                localStorage.removeItem('account')
+                localStorage.removeItem('wallet')
+                this.setState({
+                  provider: null,
+                  signer: null,
+                  signerAddress: null
+                })
+              } else {
+                localStorage.setItem('account', _accounts[0])
+                await provider.send("eth_requestAccounts", []);
+                const _signer = provider.getSigner()
+                this.setState({
+                  signer: _signer,
+                  signerAddress: _accounts[0]
+                })
+              }
+              window.location.reload()
+            })
+            injectedProvider.on('chainChanged', () => {
+              window.location.reload()
+            })
+            localStorage.setItem('account', accounts[0]);
+            localStorage.setItem('wallet', 'Metamask');
+            this.setProperties(provider, signer, accounts[0])
+          }
         }
         if (walletType === 'WalletConnect' || walletconnect !== null) {
           const provider = await EthereumProvider.init({

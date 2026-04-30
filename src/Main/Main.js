@@ -1,6 +1,7 @@
 import { ethers } from 'ethers';
 import React, { Component } from 'react';
 import Connect from '../Utils/Connect';
+import { getInjectedProvider } from '../Utils/getInjectedProvider';
 
 import Inheritances from '../Data/Inheritances';
 import NewWill from './NewWill';
@@ -15,7 +16,12 @@ class Main extends Component {
 
     async disconnect(account) {
         if (account !== null) {
-            const provider = new ethers.providers.Web3Provider(window.ethereum)
+            const injectedProvider = getInjectedProvider()
+            if (!injectedProvider) {
+                this.setState({ signer: null })
+                return
+            }
+            const provider = new ethers.providers.Web3Provider(injectedProvider)
             await provider.send("eth_requestAccounts", []);
             const signer = provider.getSigner()
             this.setState({ signer })

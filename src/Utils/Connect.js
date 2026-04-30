@@ -14,6 +14,7 @@ import chengeNetwork from '../content/chenge-network.svg'
 import { ethers } from "ethers";
 import { EthereumProvider } from "@walletconnect/ethereum-provider";
 import { chainIDs, chainRPCURL } from '../Utils/Constants.js'
+import { getInjectedProvider } from './getInjectedProvider';
 
 class Connect extends Component {
     constructor(props) {
@@ -80,7 +81,11 @@ class Connect extends Component {
 
     async connectToMetamask() {
         try {
-            const provider = new ethers.providers.Web3Provider(window.ethereum)
+            const injectedProvider = getInjectedProvider()
+            if (!injectedProvider) {
+                return
+            }
+            const provider = new ethers.providers.Web3Provider(injectedProvider)
             const accounts = await provider.send("eth_requestAccounts", []);
             const signer = provider.getSigner()
             localStorage.setItem('account', accounts[0]);
@@ -90,7 +95,7 @@ class Connect extends Component {
                 .then(() => {
                     window.location.reload()
                 })
-            window.ethereum.on('accountsChanged', async (accounts) => {
+            injectedProvider.on('accountsChanged', async (accounts) => {
                 if (accounts.length === 0) {
                     localStorage.removeItem('account')
                     localStorage.removeItem('wallet')
@@ -190,7 +195,11 @@ class Connect extends Component {
 
     async _changeNetwork(chainId, name, symbol, rpc) {
         try {
-            await window.ethereum.request({
+            const injectedProvider = getInjectedProvider()
+            if (!injectedProvider) {
+                return
+            }
+            await injectedProvider.request({
                 method: 'wallet_switchEthereumChain',
                 params: [{ chainId: ethers.utils.hexValue(chainId) }]
             })
@@ -198,7 +207,11 @@ class Connect extends Component {
         } catch (err) {
             // This error code indicates that the chain has not been added to MetaMask
             if (err.code === 4902) {
-                await window.ethereum.request({
+                const injectedProvider = getInjectedProvider()
+                if (!injectedProvider) {
+                    return
+                }
+                await injectedProvider.request({
                     method: 'wallet_addEthereumChain',
                     params: [
                         {
