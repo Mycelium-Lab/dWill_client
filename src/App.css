@@ -188,6 +188,124 @@ img[alt="networkpic"] {
 
 .modal-backdrop.show {
   z-index: 9050 !important;
+  background-color: rgba(15, 23, 42, 0.32);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 1 !important;
+}
+
+.modal-prompt.modal {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  z-index: 9100;
+}
+
+.modal-prompt .modal-dialog {
+  max-width: 420px;
+  width: calc(100% - 32px);
+  margin: 0;
+}
+
+.modal-prompt .modal-content {
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.18);
+  overflow: hidden;
+}
+
+.modal-prompt__body {
+  padding: 22px 22px 18px;
+}
+
+.modal-prompt__title {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0F172A;
+  letter-spacing: -0.01em;
+}
+
+.modal-prompt__text {
+  margin: 0 0 18px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #475569;
+}
+
+.modal-prompt__actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.modal-prompt__btn {
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+  letter-spacing: 0.01em;
+}
+
+.modal-prompt__btn--secondary {
+  background: #FFFFFF;
+  border-color: #E2E8F0;
+  color: #334155;
+}
+
+.modal-prompt__btn--secondary:hover {
+  background: #F8FAFC;
+  border-color: #CBD5E1;
+}
+
+.modal-prompt__btn--primary {
+  background: #2bb37a;
+  color: #FFFFFF;
+  box-shadow: 0 6px 16px rgba(43, 179, 122, 0.25);
+}
+
+.modal-prompt__btn--primary:hover {
+  background: #239b69;
+  transform: translateY(-1px);
+}
+
+.modal-prompt__btn:focus-visible {
+  outline: 2px solid #2bb37a;
+  outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+  .modal-prompt .modal-dialog {
+    max-width: 360px;
+  }
+
+  .modal-prompt__body {
+    padding: 18px 18px 16px;
+  }
+
+  .modal-prompt__title {
+    font-size: 16px;
+  }
+
+  .modal-prompt__text {
+    font-size: 13px;
+  }
+
+  .modal-prompt__actions {
+    gap: 6px;
+  }
+
+  .modal-prompt__btn {
+    flex: 1 1 50%;
+    justify-content: center;
+    display: inline-flex;
+    align-items: center;
+  }
 }
 
 .header_boxes {

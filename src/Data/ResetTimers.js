@@ -18,10 +18,12 @@ class ResetTimers extends Component {
             signerAddress: '',
             contractAddress: props.contractAddress,
             contract: null,
+            showPrompt: false,
             showConfirm: false,
             showAwait: false,
             showEventConfirmed: false,
             showError: false,
+            errortext: '',
             processingText: '',
             confirmedText: '',
             hash: ''
@@ -80,47 +82,76 @@ class ResetTimers extends Component {
         }
     }
 
-    async resetTimers() {
-        const { contract } = this.state
-        let willsCall = []
-        const ethcallContract = new Contract(this.props.contractAddress, TheWill.abi)
-        for (let i = 0; i < this.props.willsLength; i++) {
-            willsCall.push(ethcallContract.getWill(this.props.signerAddress, i))
-        }
-        const wills = await this.props.ethcallProvider.all(willsCall)
-        this.handleShowConfirm()
-        await contract.resetTimers(wills.map(v => v.ID))
-            .then(async (tx) => {
-                this.handleCloseConfirm()
-                this.handleShowAwait('Reset timers')
-                await tx.wait()
-                return tx.hash
-            })
-            .then((hash) => {
-                this.handleCloseAwait()
-                this.handleShowEventConfirmed('Timers has been reseted', hash)
-                setTimeout(() => {
-                    this.handleCloseEventConfirmed()
-                }, 5000)
-            })
-            .catch((err) => {
-                console.error(err)
-                this.handleCloseConfirm()
-                this.handleCloseAwait()
-                this.handleShowError('Something went wrong')
-                setTimeout(() => {
-                    this.handleCloseError()
-                }, 10000)
-            })
+    resetTimers = () => {
+        this.handleShowPrompt()
     }
 
-    resetTimers = this.resetTimers.bind(this)
+    confirmResetTimers = async () => {
+        this.handleClosePrompt()
+        const { contract } = this.state
+        if (!contract || !this.props.willsLength) {
+            this.handleShowError('No active dWills to reset')
+            setTimeout(() => this.handleCloseError(), 5000)
+            return
+        }
+
+        let wills = []
+        try {
+            try {
+                const ethcallContract = new Contract(this.props.contractAddress, TheWill.abi)
+                const willsCall = []
+                for (let i = 0; i < this.props.willsLength; i++) {
+                    willsCall.push(ethcallContract.getWill(this.props.signerAddress, i))
+                }
+                wills = await this.props.ethcallProvider.all(willsCall)
+            } catch (multicallErr) {
+                console.warn('Multicall failed, falling back to direct calls', multicallErr)
+                wills = []
+                for (let i = 0; i < this.props.willsLength; i++) {
+                    // eslint-disable-next-line no-await-in-loop
+                    const w = await contract.getWill(this.props.signerAddress, i)
+                    wills.push(w)
+                }
+            }
+
+            if (!wills.length) {
+                this.handleShowError('No active dWills to reset')
+                setTimeout(() => this.handleCloseError(), 5000)
+                return
+            }
+
+            this.handleShowConfirm()
+            const tx = await contract.resetTimers(wills.map(v => v.ID))
+            this.handleCloseConfirm()
+            this.handleShowAwait('Reset timers')
+            await tx.wait()
+            this.handleCloseAwait()
+            this.handleShowEventConfirmed('Timers have been reset', tx.hash)
+            setTimeout(() => this.handleCloseEventConfirmed(), 5000)
+        } catch (err) {
+            console.error(err)
+            this.handleCloseConfirm()
+            this.handleCloseAwait()
+            const message = (err && (err.message || err.reason || '')) + ''
+            const userRejected =
+                (err && err.code === 4001) ||
+                /user (denied|rejected)/i.test(message) ||
+                /ACTION_REJECTED/i.test(message)
+            if (!userRejected) {
+                this.handleShowError('Something went wrong. Please try again.')
+                setTimeout(() => this.handleCloseError(), 8000)
+            }
+        }
+    }
 
     handleClose = () => this.setState({ show: false });
     handleShow = () => this.setState({ show: true });
 
     handleClose = this.handleClose.bind(this)
     handleShow = this.handleShow.bind(this)
+
+    handleShowPrompt = () => this.setState({ showPrompt: true })
+    handleClosePrompt = () => this.setState({ showPrompt: false })
 
     handleShowConfirm = () => this.setState({ showConfirm: true })
     handleShowAwait = (processingText) => {
@@ -179,6 +210,37 @@ class ResetTimers extends Component {
                 >
                     <span id='reset-timersh2' className='btn_reset-timers-label'>Reset timers</span>
                 </Button>
+                <Modal
+                    show={this.state.showPrompt}
+                    onHide={this.handleClosePrompt}
+                    className="modal-prompt"
+                    centered
+                    backdrop="static"
+                >
+                    <div className="modal-prompt__body">
+                        <h2 className="modal-prompt__title">Reset all timers</h2>
+                        <p className="modal-prompt__text">
+                            This resets the inactivity countdown for every active dWill you own.
+                            You'll be asked to confirm the transaction in your wallet.
+                        </p>
+                        <div className="modal-prompt__actions">
+                            <button
+                                type="button"
+                                className="modal-prompt__btn modal-prompt__btn--secondary"
+                                onClick={this.handleClosePrompt}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="button"
+                                className="modal-prompt__btn modal-prompt__btn--primary"
+                                onClick={this.confirmResetTimers}
+                            >
+                                Reset timers
+                            </button>
+                        </div>
+                    </div>
+                </Modal>
                 <Modal show={this.state.showConfirm} className="modal-confirm">
                     <Modal.Header>
                         <h2 className='modal-confirm_h2'>Pending  transaction</h2>
