@@ -69,16 +69,34 @@ hr {
   flex-direction: column;
   min-height: 100vh;
   min-height: 100dvh;
+  height: auto;
+  overflow: visible;
+}
+
+main._container {
+  flex: 1 1 auto;
+  min-height: auto;
+  overflow-y: visible;
+  padding-bottom: 24px;
+}
+
+.App--main {
+  min-height: 100vh;
+  min-height: 100dvh;
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
 }
 
-main._container {
-  flex: 1 1 auto;
+.App--main main._container {
   min-height: 0;
   overflow-y: auto;
   padding-bottom: 88px;
+}
+
+.App--data footer {
+  position: static;
+  margin-top: 12px;
 }
 
 ._container {
@@ -94,7 +112,6 @@ main._container {
   body,
   #root {
     height: 100%;
-    overflow: hidden;
   }
 
   .App {
@@ -1975,6 +1992,7 @@ input::-webkit-inner-spin-button {
   padding: 28px 36px;
   background: #FFFFFF;
   box-shadow: 0 20px 60px rgba(15,23,42,0.06);
+  border: 1px solid #E2E8F0;
   color: #475569;
   margin-bottom: 0;
   border-radius: 28px;
@@ -1990,7 +2008,7 @@ input::-webkit-inner-spin-button {
 .page-data__block-container {
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 20px;
   padding: 26px 5px;
@@ -2439,14 +2457,12 @@ ul.your-wills__footer {
 
 .your_inheritances_ul-text {
   color: #475569;
-  /* max-width: 322px; */
   word-break: break-word;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
-  line-height: 17px;
-  letter-spacing: 0.0264em;
-  /* padding-bottom: 27px; */
+  line-height: 1.6;
+  letter-spacing: normal;
 }
 
 /* .your_inheritances_ul-text a {
@@ -2456,8 +2472,11 @@ ul.your-wills__footer {
 .your_inheritances_ul-text__head {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-bottom: 30px;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #E2E8F0;
+  padding-bottom: 16px;
+  gap: 10px;
 }
 
 .input-group-year {
@@ -2566,10 +2585,10 @@ ul.your-wills__footer {
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding-bottom: 80px;
+  align-items: stretch;
+  padding-bottom: 24px;
   padding-top: 20px;
-  gap: 20px;
+  gap: 16px;
 }
 
 .page-data a {
@@ -2839,8 +2858,12 @@ ul.your-wills__footer {
 }
 
 .your-wills_text-info a {
-  margin-bottom: 20px;
+  margin: 8px 0 10px;
   display: block;
+}
+
+.your-wills_text-info {
+  line-height: 1.6;
 }
 
 .your-wills__btns {
@@ -3905,7 +3928,7 @@ footer a {
 
 @media (max-width: 767px) {
   .page-data {
-    padding-bottom: 60px;
+    padding-bottom: 20px;
     padding-top: 12px;
     gap: 12px;
   }
@@ -3922,6 +3945,10 @@ footer a {
 
   .wills-description-block__col {
     width: 100%;
+  }
+
+  .wills-description-block__header {
+    gap: 12px;
   }
 }
 

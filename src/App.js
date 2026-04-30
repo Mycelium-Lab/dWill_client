@@ -392,8 +392,10 @@ class App extends Component {
   loadBasic = this.loadBasic.bind(this)
 
   render() {
+    const showDataView = !(this.state.signer === null || this.state.willsLength == 0)
+
     return (
-      <div className="App">
+      <div className={`App ${showDataView ? 'App--data' : 'App--main'}`}>
         <canvas id="space"></canvas>
         <header className="header">
           <div className="_container">
